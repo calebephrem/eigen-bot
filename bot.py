@@ -174,7 +174,7 @@ class Fun2OoshBot(commands.Bot):
 
         # Set presence
         await self.change_presence(
-            activity=discord.Game(name="?help")
+            activity=discord.Game(name="?helpmenu | Made by YC45")
         )
 
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
