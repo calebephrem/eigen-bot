@@ -19,6 +19,10 @@ COG_EMOJIS = {
     "invitetracker": "📊",
     "casino": "🎰",
     "afksystem": "💤",
+    "codebuddyleaderboardcog": "🏆",
+    "codebuddyquizcog": "🧠",
+    "codebuddyflexcog": "💪",
+    "codebuddyhelpcog": "ℹ️",
 }
 
 # Category descriptions
@@ -36,6 +40,10 @@ COG_DESCRIPTIONS = {
     "invitetracker": "Professional invite tracking system with analytics",
     "casino": "🎲 12 professional casino games: Blackjack (?bj), Poker (?pk), Roulette (?rl), Slots (?s), Dice (?d), and more! Win big or go broke!",
     "afksystem": "💤 Away From Keyboard system - Set AFK status with custom reasons, auto-respond to mentions, and track time away",
+    "codebuddyleaderboardcog": "View coding leaderboards, weekly stats, and streaks",
+    "codebuddyquizcog": "Test your coding knowledge with quizzes",
+    "codebuddyflexcog": "Flex your coding stats and achievements",
+    "codebuddyhelpcog": "Help and information for CodeBuddy features",
 }
 
 

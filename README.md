@@ -106,6 +106,18 @@ Professional invite tracking and analytics:
 - **Leave Tracking**: Updates stats when invited members leave
 - **Detailed Analytics**: Total, valid, left, and fake invite statistics
 
+### **CodeBuddy System**
+Engage your community with coding challenges and leaderboards:
+- **Coding Quizzes**: Test your knowledge with automated coding questions
+- **Leaderboards**:
+  - `/codeweek` - Weekly coding leaderboard (resets Mondays)
+  - `/codestreak` - Track your daily coding streak
+  - `/codeleaderboard` - All-time coding leaderboard
+- **Stats & Flex**:
+  - `/codestats` - View your personal coding statistics
+  - `/codeflex` - Generate a cool image card with your stats
+- **Engagement**: Earn points for correct answers and climb the ranks!
+
 ### **Fun Commands**
 Entertainment and engagement features:
 - **Programming Jokes**: `f?joke` - Get a clean programming-related joke
@@ -344,6 +356,15 @@ f?tags list                     - List all tags
 f?election create <title> <candidates> [duration]  - Start election
 f?election results                                 - View results
 f?election end                                     - Force end election
+```
+
+### **CodeBuddy Commands**
+```
+/codeweek                  - Weekly coding leaderboard
+/codestreak                - View streak leaderboard
+/codeleaderboard           - All-time leaderboard
+/codestats [@user]         - View coding stats
+/codeflex                  - Generate stats card image
 ```
 
 ### **Invite Tracker Commands**
