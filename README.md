@@ -95,6 +95,15 @@ Helpful tools for server management:
 - **Random Color**: `?randomcolor` - Generate random hex colors
 - **Reminders**: `?remindme <time> <message>` - Set personal reminders
 - **User Info**: `?whois [@user]` - Detailed user information
+- **Timestamps**: `/timestamp` - Generate Discord timestamps with timezone support
+
+### **💬 Support & Feedback**
+Connect with our support team:
+- **Bug Reports**: `?bug` or `/bug` - Report bugs directly to our support server
+- **Feature Requests**: `/newfeature` - Suggest new features or improvements
+- **Feedback**: `/feedback` - Share your feedback with a 1-5 star rating
+- **Support Server**: `?support` or `/support` - Get the support server invite link
+- All reports are sent directly to our support team for review
 
 ### **💤 AFK System**
 - Set AFK status with custom reasons

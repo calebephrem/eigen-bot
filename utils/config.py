@@ -4,7 +4,7 @@ Configuration management using Pydantic settings.
 
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, ConfigDict
 from pydantic_settings import BaseSettings
 
 
@@ -22,6 +22,8 @@ class Config(BaseSettings):
     # CodeBuddy settings
     question_channel_id: Optional[int] = Field(default=None)
 
-    class Config:
-        env_file = '.env'
-        case_sensitive = False
+    model_config = ConfigDict(
+        env_file='.env',
+        case_sensitive=False,
+        extra='ignore'  # Ignore extra fields from .env (like old economy settings)
+    )

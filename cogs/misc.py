@@ -287,22 +287,28 @@ class Misc(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @app_commands.command(name='bug', description='Report a bug to the bot developers')
+    @commands.hybrid_command(name='bug', description='Report a bug to the bot developers')
     @app_commands.describe(bug='Describe the bug you encountered')
-    async def bug_report(self, interaction: discord.Interaction, bug: str):
+    async def bug_report(self, ctx: commands.Context, *, bug: str):
         """Report a bug to the support server."""
         # Support server channel ID
         SUPPORT_CHANNEL_ID = 1452739906525728828
+        
+        # Get interaction for hybrid command
+        interaction = ctx.interaction or ctx
+        user = ctx.author
+        guild = ctx.guild
         
         try:
             # Get the support channel
             support_channel = self.bot.get_channel(SUPPORT_CHANNEL_ID)
             
             if not support_channel or not isinstance(support_channel, discord.TextChannel):
-                await interaction.response.send_message(
-                    "❌ Could not access the support channel. Please join our [support server](https://discord.gg/4TkQYz7qea) and report the bug there.",
-                    ephemeral=True
-                )
+                response = "❌ Could not access the support channel. Please join our [support server](https://discord.gg/4TkQYz7qea) and report the bug there."
+                if ctx.interaction:
+                    await ctx.interaction.response.send_message(response, ephemeral=True)
+                else:
+                    await ctx.send(response)
                 return
             
             # Create bug report embed
@@ -316,15 +322,15 @@ class Misc(commands.Cog):
             # Add reporter information
             embed.add_field(
                 name="Reported by",
-                value=f"{interaction.user.mention} (`{interaction.user.id}`)",
+                value=f"{user.mention} (`{user.id}`)",
                 inline=True
             )
             
             # Add server information if available
-            if interaction.guild:
+            if guild:
                 embed.add_field(
                     name="Server",
-                    value=f"{interaction.guild.name} (`{interaction.guild.id}`)",
+                    value=f"{guild.name} (`{guild.id}`)",
                     inline=True
                 )
             else:
@@ -335,30 +341,36 @@ class Misc(commands.Cog):
                 )
             
             embed.set_footer(
-                text=f"User ID: {interaction.user.id}",
-                icon_url=interaction.user.display_avatar.url
+                text=f"User ID: {user.id}",
+                icon_url=user.display_avatar.url
             )
             
             # Send to support channel
             await support_channel.send(embed=embed)
             
             # Confirm to user
-            await interaction.response.send_message(
+            response = (
                 "✅ Your bug report has been submitted to our support team. Thank you for helping us improve!\n\n"
                 "**Want to track your report or get faster support?**\n"
-                "Join our support server: https://discord.gg/4TkQYz7qea",
-                ephemeral=True
+                "Join our support server: https://discord.gg/4TkQYz7qea"
             )
+            if ctx.interaction:
+                await ctx.interaction.response.send_message(response, ephemeral=True)
+            else:
+                await ctx.send(response)
             
         except Exception as e:
-            await interaction.response.send_message(
+            response = (
                 f"❌ An error occurred while submitting your bug report: {str(e)}\n\n"
-                "Please report this directly in our [support server](https://discord.gg/4TkQYz7qea).",
-                ephemeral=True
+                "Please report this directly in our [support server](https://discord.gg/4TkQYz7qea)."
             )
+            if ctx.interaction:
+                await ctx.interaction.response.send_message(response, ephemeral=True)
+            else:
+                await ctx.send(response)
     
-    @app_commands.command(name='support', description='Get the support server invite link')
-    async def support(self, interaction: discord.Interaction):
+    @commands.hybrid_command(name='support', description='Get the support server invite link')
+    async def support(self, ctx: commands.Context):
         """Send the support server invite link."""
         embed = discord.Embed(
             title="💬 Need Help?",
@@ -375,7 +387,10 @@ class Misc(commands.Cog):
         
         embed.set_footer(text="We're here to help!")
         
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        if ctx.interaction:
+            await ctx.interaction.response.send_message(embed=embed, ephemeral=True)
+        else:
+            await ctx.send(embed=embed)
     
     @app_commands.command(name='newfeature', description='Suggest a new feature for the bot')
     @app_commands.describe(feature='Describe the feature you would like to see')

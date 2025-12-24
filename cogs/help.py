@@ -31,7 +31,7 @@ COG_DESCRIPTIONS = {
     "tags": "Create and manage custom text snippets for your server",
     "communitycommands": "Engage your community with quotes, questions, and memes",
     "election": "Democratic voting system with weighted votes",
-    "misc": "Miscellaneous utility commands",
+    "misc": "Support commands, bug reports, feedback, timestamps, and more",
     "starboardsystem": "Highlight the best messages with stars",
     "whoisalias": "User information and lookup commands",
     "utilityextra": "Extra utility commands like reminders, dice, and emotes",

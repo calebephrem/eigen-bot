@@ -446,14 +446,15 @@ class Tickets(commands.Cog):
             },
             "bug_reports": {
                 "name": "Bug Reports",
-                "description": "Report issues related to roles, permissions, or access",
+                "description": "Report bugs, glitches, or technical issues with the bot or server features",
                 "guidelines": (
-                    "**Missing roles** - Which roles are you missing?\n"
-                    "**Permission errors** - What are you trying to do?\n"
-                    "**Role color/icon** - Issues with role appearance\n"
-                    "**Self-assignable roles** - Problems with reaction roles or commands"
+                    "**What happened?** - Describe the bug clearly\n"
+                    "**Expected behavior** - What should have happened instead?\n"
+                    "**Steps to reproduce** - How can we recreate this issue?\n"
+                    "**Error messages** - Include any error messages you saw\n"
+                    "**When it happened** - Date and time (approximate)"
                 ),
-                "examples": "Didn't get level up role, can't access channel, role color wrong",
+                "examples": "Bot commands not working, features broken, error messages, unexpected behavior",
                 "color": 0x2B2D31
             },
             "report": {
@@ -471,14 +472,15 @@ class Tickets(commands.Cog):
             },
             "feature_requests": {
                 "name": "Feature Requests",
-                "description": "Appeal a warning or moderation action taken against you",
+                "description": "Suggest new features, improvements, or changes to existing functionality",
                 "guidelines": (
-                    "**Case ID** - The ID of the warning (if known)\n"
-                    "**Reason for appeal** - Why do you think the warning was unjust?\n"
-                    "**Evidence** - Any proof to support your claim\n"
-                    "**Honesty** - Be honest about the situation"
+                    "**Feature description** - What feature would you like to see?\n"
+                    "**Why it's useful** - How would this benefit the community?\n"
+                    "**How it should work** - Explain your vision for implementation\n"
+                    "**Similar examples** - Any inspiration from other bots/servers?\n"
+                    "**Priority** - How important is this to you? (low/medium/high)"
                 ),
-                "examples": "Unjust warning, misunderstanding, incorrect punishment",
+                "examples": "New bot commands, server improvements, quality of life changes, feature enhancements",
                 "color": 0x2B2D31
             },
             "other": {
