@@ -95,18 +95,19 @@ class BumpSystem(commands.Cog):
             
             if channel and isinstance(channel, discord.TextChannel):
                 # Prepare message
-                content = message_text or "It's time to bump the server! Use `/bump`"
-                if role_id:
-                    content = f"<@&{role_id}> {content}"
+                msg = message_text or "It's time to bump the server!"
+                
+                # Construct content with role ping
+                content = f"<@&{role_id}> {msg}" if role_id else msg
                 
                 try:
                     embed = discord.Embed(
                         title="🔔 Bump Reminder",
-                        description=content,
+                        description="It's time to bump the server! Use `/bump`",
                         color=discord.Color.blue()
                     )
                     embed.set_footer(text="Bump now to track your reaction time!")
-                    await channel.send(content=f"<@&{role_id}>" if role_id else None, embed=embed)
+                    await channel.send(content=content, embed=embed)
                     
                     # Update state (insert or update)
                     now = datetime.now(timezone.utc).timestamp()

@@ -178,38 +178,10 @@ class AFKSystem(commands.Cog):
         
         # Create response embed
         embed = discord.Embed(
-            title=f" AFK Status {action_text.title()}",
-            color=discord.Color.orange()
+            description=f"**{ctx.author.display_name}** is now AFK" + (f": {reason[:150]}" if reason else ""),
+            color=0x000000
         )
-        
-        if reason:
-            # Truncate reason if too long
-            display_reason = reason[:200] + "..." if len(reason) > 200 else reason
-            embed.description = f"**{ctx.author.display_name}** is now AFK: {display_reason}"
-        else:
-            embed.description = f"**{ctx.author.display_name}** is now AFK"
-            
-        embed.add_field(
-            name=" Auto-Return",
-            value="You'll automatically return when you send any message!",
-            inline=True
-        )
-        embed.add_field(
-            name=" Mentions",
-            value="I'll respond to mentions while you're away",
-            inline=True
-        )
-        
-        if was_afk and old_info:
-            old_reason = old_info['reason']
-            if old_reason != reason:
-                embed.add_field(
-                    name=" Previous Reason",
-                    value=old_reason[:100] + "..." if len(old_reason) > 100 else old_reason,
-                    inline=False
-                )
-        
-        embed.set_footer(text=f"Use /unafk to manually return • Set at")
+        embed.set_footer(text=f"AFK Status {action_text.title()}")
         embed.timestamp = datetime.now(timezone.utc)
         
         await ctx.send(embed=embed)
@@ -227,14 +199,8 @@ class AFKSystem(commands.Cog):
         
         if not self.is_afk(ctx.author.id):
             embed = discord.Embed(
-                title=" Not AFK",
                 description="You're not currently set as AFK.",
-                color=discord.Color.blue()
-            )
-            embed.add_field(
-                name=" Tip",
-                value="Use `/afk [reason]` to set yourself as AFK",
-                inline=False
+                color=0x000000
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
@@ -245,35 +211,21 @@ class AFKSystem(commands.Cog):
         
         # Create welcome back embed
         embed = discord.Embed(
-            title=" Welcome Back!",
             description=f"**{ctx.author.display_name}** is no longer AFK",
-            color=discord.Color.green()
+            color=0x000000
         )
         
         if afk_info:
             duration = self.format_afk_duration(afk_info['set_time'])
             mention_count = afk_info['mention_count']
-            reason = afk_info['reason']
             
-            embed.add_field(
-                name=" AFK Duration",
-                value=duration,
-                inline=True
-            )
-            embed.add_field(
-                name=" Mentions Received",
-                value=str(mention_count),
-                inline=True
-            )
+            details = f"AFK Duration: {duration}"
+            if mention_count > 0:
+                details += f" • Mentions: {mention_count}"
+            embed.set_footer(text=details)
+        else:
+            embed.set_footer(text="Manually returned from AFK")
             
-            if reason and reason != "No reason provided":
-                embed.add_field(
-                    name=" Previous Reason",
-                    value=reason[:200] + "..." if len(reason) > 200 else reason,
-                    inline=False
-                )
-            
-        embed.set_footer(text="Manually returned from AFK")
         embed.timestamp = datetime.now(timezone.utc)
         await ctx.send(embed=embed)
 
@@ -289,9 +241,8 @@ class AFKSystem(commands.Cog):
         
         if not ctx.guild:
             embed = discord.Embed(
-                title=" Server Only",
                 description="This command can only be used in a server.",
-                color=discord.Color.red()
+                color=0x000000
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
@@ -312,14 +263,8 @@ class AFKSystem(commands.Cog):
                     
         if not guild_afk_users:
             embed = discord.Embed(
-                title=" AFK Users",
                 description="No users are currently AFK in this server.",
-                color=discord.Color.blue()
-            )
-            embed.add_field(
-                name=" Tip",
-                value="Use `/afk [reason]` to set yourself as AFK",
-                inline=False
+                color=0x000000
             )
             await ctx.send(embed=embed)
             return
@@ -329,9 +274,9 @@ class AFKSystem(commands.Cog):
         
         # Create embed with AFK users
         embed = discord.Embed(
-            title=" Currently AFK Users",
-            description=f"Found **{len(guild_afk_users)}** AFK user(s) in **{ctx.guild.name}**",
-            color=discord.Color.orange()
+            title="Currently AFK Users",
+            description=f"{len(guild_afk_users)} user(s) in {ctx.guild.name}",
+            color=0x000000
         )
         
         # Show up to 10 users
@@ -339,30 +284,22 @@ class AFKSystem(commands.Cog):
         for i in range(display_count):
             afk_user = guild_afk_users[i]
             member = afk_user['member']
-            reason = afk_user['reason']
+            reason = afk_user['reason'][:100] if len(afk_user['reason']) > 100 else afk_user['reason']
             
-            # Truncate long reasons
-            if len(reason) > 150:
-                reason = reason[:150] + "..."
-            
-            field_value = f"**Reason:** {reason}\n"
-            field_value += f"**Duration:** {afk_user['duration']}\n"
-            field_value += f"**Mentions:** {afk_user['mentions']}"
+            field_value = f"Reason: {reason}\n"
+            field_value += f"Duration: {afk_user['duration']} • Mentions: {afk_user['mentions']}"
             
             embed.add_field(
-                name=f" {member.display_name}",
+                name=member.display_name,
                 value=field_value,
-                inline=True
-            )
-            
-        if len(guild_afk_users) > 10:
-            embed.add_field(
-                name=" Note",
-                value=f"Showing first 10 of {len(guild_afk_users)} AFK users.\nUse this command again to refresh the list.",
                 inline=False
             )
             
-        embed.set_footer(text=f"Total: {len(guild_afk_users)} AFK users • Auto-updates every message")
+        if len(guild_afk_users) > 10:
+            embed.set_footer(text=f"Showing 10 of {len(guild_afk_users)} AFK users")
+        else:
+            embed.set_footer(text=f"Total: {len(guild_afk_users)} AFK users")
+            
         embed.timestamp = datetime.now(timezone.utc)
         await ctx.send(embed=embed)
 
@@ -461,13 +398,13 @@ class AFKSystem(commands.Cog):
                 
                 # Send welcome back message
                 embed = discord.Embed(
-                    title="Welcome Back!",
                     description=f"**{message.author.display_name}** is no longer AFK",
-                    color=discord.Color.green()
+                    color=0x000000
                 )
-                embed.add_field(name="Was AFK for", value=duration, inline=True)
+                footer_text = f"Was AFK for {duration}"
                 if mention_count > 0:
-                    embed.add_field(name="Mentions received", value=str(mention_count), inline=True)
+                    footer_text += f" • {mention_count} mentions received"
+                embed.set_footer(text=footer_text)
                 
                 try:
                     await message.channel.send(embed=embed, delete_after=10)
@@ -495,27 +432,16 @@ class AFKSystem(commands.Cog):
                         duration = self.format_afk_duration(afk_info['set_time'])
                         reason = afk_info['reason']
                         
-                        embed = discord.Embed(
-                            title="User is AFK",
-                            color=discord.Color.orange()
-                        )
-                        
                         if reason and reason != "No reason provided":
-                            embed.description = f"**{mentioned_user.display_name}** is currently AFK: {reason}"
+                            description = f"**{mentioned_user.display_name}** is currently AFK: {reason[:150]}"
                         else:
-                            embed.description = f"**{mentioned_user.display_name}** is currently AFK"
-                            
-                        embed.add_field(
-                            name="AFK Duration",
-                            value=duration,
-                            inline=True
+                            description = f"**{mentioned_user.display_name}** is currently AFK"
+                        
+                        embed = discord.Embed(
+                            description=description,
+                            color=0x000000
                         )
-                        embed.add_field(
-                            name="Mentions",
-                            value=str(afk_info['mention_count'] + 1),  # +1 for current mention
-                            inline=True
-                        )
-                        embed.set_footer(text="They'll see your message when they return!")
+                        embed.set_footer(text=f"AFK for {duration} • {afk_info['mention_count'] + 1} mentions")
                         
                         try:
                             await message.channel.send(embed=embed, delete_after=15)

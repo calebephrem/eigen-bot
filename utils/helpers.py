@@ -141,3 +141,6 @@ def create_error_embed(title: str, description: str = "") -> Embed:
 def create_warning_embed(title: str, description: str = "") -> Embed:
     # Using yellow/orange for warning style
     return Embed(title=title, description=description, color=discord.Color.orange())
+
+def create_info_embed(title: str, description: str = "") -> Embed:
+    return EmbedBuilder.info_embed(title, description)

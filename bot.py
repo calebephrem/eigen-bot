@@ -1,9 +1,8 @@
 """
 Main entry point for the Eigen Discord bot.
 
-This bot implements a casino-style economy with various games and commands.
-It uses discord.py for interactions, SQLAlchemy for async database operations,
-and supports both slash commands and message commands.
+This bot provides various utilities and features for Discord servers.
+It uses discord.py for interactions and supports both slash commands and message commands.
 """
 
 import asyncio
@@ -15,9 +14,6 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-
-from models import Base
 from utils.config import Config
 
 # Load environment variables
@@ -52,10 +48,6 @@ class Fun2OoshBot(commands.Bot):
 
         self.start_time = discord.utils.utcnow()
         self.config = config
-        self.engine = create_async_engine(config.database_url, echo=False)
-        self.async_session_maker = async_sessionmaker(
-            self.engine, expire_on_commit=False
-        )
         # Discover available cog modules from the cogs directory
         from pathlib import Path
         cogs_dir = Path(__file__).resolve().parent / 'cogs'
@@ -66,16 +58,8 @@ class Fun2OoshBot(commands.Bot):
                     self.available_cogs.append(p.stem)
         logger.info(f"Available cogs discovered: {self.available_cogs}")
 
-    def get_session(self) -> AsyncSession:
-        """Get a database session."""
-        return self.async_session_maker()
-
     async def setup_hook(self) -> None:
         """Setup hook called before the bot starts."""
-        # Create database tables
-        async with self.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-
         # Initialize CodeBuddy database
         try:
             from utils.codebuddy_database import init_db
@@ -86,9 +70,9 @@ class Fun2OoshBot(commands.Bot):
 
         # Load core cogs
         core_cogs = [
-            'cogs.economy',
             'cogs.misc',
             'cogs.admin',
+            'cogs.tickets',
         ]
 
         for ext in core_cogs:
@@ -109,13 +93,13 @@ class Fun2OoshBot(commands.Bot):
             'cogs.whois_alias',
             'cogs.utility_extra',
             'cogs.rules',
-            'cogs.casino',
             'cogs.afk',
             'cogs.codebuddy_quiz',
             'cogs.codebuddy_flex',
             'cogs.codebuddy_leaderboard',
             'cogs.codebuddy_help',
             'cogs.bump',
+            'cogs.birthday',
         ]
 
         for ext in feature_cogs:

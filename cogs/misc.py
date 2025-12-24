@@ -5,14 +5,11 @@ Misc commands cog.
 import discord
 from discord import app_commands
 from discord.ext import commands
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
+from datetime import datetime, timezone
+import calendar
 
-from models import User
 from utils.config import Config
-from utils.economy_utils import EconomyUtils
-from utils.helpers import EmbedBuilder, format_coins, responsible_gaming_notice
 from bot import Fun2OoshBot
 
 
@@ -29,8 +26,8 @@ class Misc(commands.Cog):
         embed = discord.Embed(
             title="📚 About Eigen Bot",
             description=(
-                "**Eigen Bot** is a feature-rich, production-ready Discord bot that brings together "
-                "economy systems, casino games, community engagement, and utility features.\n\n"
+                "**Eigen Bot** is a feature-rich Discord bot for community engagement, "
+                "support tickets, and utility features.\n\n"
                 "Built with ❤️ using discord.py and modern async architecture."
             ),
             color=discord.Color.blue()
@@ -38,7 +35,7 @@ class Misc(commands.Cog):
         
         # Add bot stats
         total_guilds = len(self.bot.guilds)
-        total_users = sum(guild.member_count or 0 for guild in self.bot.guilds)
+        total_users = sum(guild.member_count for guild in self.bot.guilds if guild.member_count)
         total_commands = len(self.bot.tree.get_commands())
         
         embed.add_field(
@@ -54,13 +51,12 @@ class Misc(commands.Cog):
         embed.add_field(
             name="🎯 Features",
             value=(
-                "💰 Economy System\n"
-                "🎰 Casino Games\n"
+                "🎫 Support Tickets\n"
                 "⭐ Starboard\n"
                 "🏷️ Custom Tags\n"
                 "🗳️ Elections\n"
                 "📊 Invite Tracker\n"
-                "🎰 Casino Games\n"
+                "💤 AFK System\n"
                 "🎭 Fun Commands\n"
                 "🛠️ Utilities"
             ),
@@ -72,7 +68,7 @@ class Misc(commands.Cog):
             value=(
                 "[GitHub](https://github.com/TheCodeVerseHub/Eigen-Bot) • "
                 "[Invite Bot](https://discord.com/api/oauth2/authorize) • "
-                "[Support Server](https://discord.gg/3xKFvKhuGR)"
+                "[Support Server](https://discord.gg/4TkQYz7qea)"
             ),
             inline=False
         )
@@ -275,7 +271,7 @@ class Misc(commands.Cog):
         # Guilds
         guilds = len(self.bot.guilds)
         # Users
-        users = sum(g.member_count for g in self.bot.guilds)
+        users = sum(g.member_count for g in self.bot.guilds if g.member_count)
         # Latency
         latency = round(self.bot.latency * 1000)
         
@@ -290,6 +286,375 @@ class Misc(commands.Cog):
              embed.add_field(name="Start Time", value=discord.utils.format_dt(self.bot.start_time, 'R'), inline=True)
 
         await ctx.send(embed=embed)
+
+    @app_commands.command(name='bug', description='Report a bug to the bot developers')
+    @app_commands.describe(bug='Describe the bug you encountered')
+    async def bug_report(self, interaction: discord.Interaction, bug: str):
+        """Report a bug to the support server."""
+        # Support server channel ID
+        SUPPORT_CHANNEL_ID = 1452739906525728828
+        
+        try:
+            # Get the support channel
+            support_channel = self.bot.get_channel(SUPPORT_CHANNEL_ID)
+            
+            if not support_channel or not isinstance(support_channel, discord.TextChannel):
+                await interaction.response.send_message(
+                    "❌ Could not access the support channel. Please join our [support server](https://discord.gg/4TkQYz7qea) and report the bug there.",
+                    ephemeral=True
+                )
+                return
+            
+            # Create bug report embed
+            embed = discord.Embed(
+                title="🐛 Bug Report",
+                description=bug,
+                color=discord.Color.red(),
+                timestamp=discord.utils.utcnow()
+            )
+            
+            # Add reporter information
+            embed.add_field(
+                name="Reported by",
+                value=f"{interaction.user.mention} (`{interaction.user.id}`)",
+                inline=True
+            )
+            
+            # Add server information if available
+            if interaction.guild:
+                embed.add_field(
+                    name="Server",
+                    value=f"{interaction.guild.name} (`{interaction.guild.id}`)",
+                    inline=True
+                )
+            else:
+                embed.add_field(
+                    name="Location",
+                    value="Direct Message",
+                    inline=True
+                )
+            
+            embed.set_footer(
+                text=f"User ID: {interaction.user.id}",
+                icon_url=interaction.user.display_avatar.url
+            )
+            
+            # Send to support channel
+            await support_channel.send(embed=embed)
+            
+            # Confirm to user
+            await interaction.response.send_message(
+                "✅ Your bug report has been submitted to our support team. Thank you for helping us improve!\n\n"
+                "**Want to track your report or get faster support?**\n"
+                "Join our support server: https://discord.gg/4TkQYz7qea",
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            await interaction.response.send_message(
+                f"❌ An error occurred while submitting your bug report: {str(e)}\n\n"
+                "Please report this directly in our [support server](https://discord.gg/4TkQYz7qea).",
+                ephemeral=True
+            )
+    
+    @app_commands.command(name='support', description='Get the support server invite link')
+    async def support(self, interaction: discord.Interaction):
+        """Send the support server invite link."""
+        embed = discord.Embed(
+            title="💬 Need Help?",
+            description=(
+                "Join our support server for:\n\n"
+                "• Bug reports and feedback\n"
+                "• Feature requests\n"
+                "• General help and questions\n"
+                "• Updates and announcements\n\n"
+                "**[Click here to join!](https://discord.gg/4TkQYz7qea)**"
+            ),
+            color=discord.Color.blurple()
+        )
+        
+        embed.set_footer(text="We're here to help!")
+        
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    
+    @app_commands.command(name='newfeature', description='Suggest a new feature for the bot')
+    @app_commands.describe(feature='Describe the feature you would like to see')
+    async def new_feature(self, interaction: discord.Interaction, feature: str):
+        """Submit a feature request to the support server."""
+        # Feature requests channel ID
+        FEATURE_CHANNEL_ID = 1452740031419777096
+        
+        try:
+            # Get the feature requests channel
+            feature_channel = self.bot.get_channel(FEATURE_CHANNEL_ID)
+            
+            if not feature_channel or not isinstance(feature_channel, discord.TextChannel):
+                await interaction.response.send_message(
+                    "❌ Could not access the feature requests channel. Please join our [support server](https://discord.gg/4TkQYz7qea) and submit your request there.",
+                    ephemeral=True
+                )
+                return
+            
+            # Create feature request embed
+            embed = discord.Embed(
+                title="💡 Feature Request",
+                description=feature,
+                color=discord.Color.green(),
+                timestamp=discord.utils.utcnow()
+            )
+            
+            # Add requester information
+            embed.add_field(
+                name="Requested by",
+                value=f"{interaction.user.mention} (`{interaction.user.id}`)",
+                inline=True
+            )
+            
+            # Add server information if available
+            if interaction.guild:
+                embed.add_field(
+                    name="Server",
+                    value=f"{interaction.guild.name} (`{interaction.guild.id}`)",
+                    inline=True
+                )
+            else:
+                embed.add_field(
+                    name="Location",
+                    value="Direct Message",
+                    inline=True
+                )
+            
+            embed.set_footer(
+                text=f"User ID: {interaction.user.id}",
+                icon_url=interaction.user.display_avatar.url
+            )
+            
+            # Send to feature requests channel
+            await feature_channel.send(embed=embed)
+            
+            # Confirm to user
+            await interaction.response.send_message(
+                "✅ Your feature request has been submitted! Our team will review it soon.\n\n"
+                "**Want to discuss your idea or see other requests?**\n"
+                "Join our support server: https://discord.gg/4TkQYz7qea",
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            await interaction.response.send_message(
+                f"❌ An error occurred while submitting your feature request: {str(e)}\n\n"
+                "Please submit it directly in our [support server](https://discord.gg/4TkQYz7qea).",
+                ephemeral=True
+            )
+    
+    @app_commands.command(name='feedback', description='Share your feedback about the bot')
+    @app_commands.describe(
+        rating='Rate your experience (1-5 stars)',
+        feedback='Share your thoughts, suggestions, or testimonial'
+    )
+    @app_commands.choices(rating=[
+        app_commands.Choice(name='⭐ 1 Star - Poor', value=1),
+        app_commands.Choice(name='⭐⭐ 2 Stars - Fair', value=2),
+        app_commands.Choice(name='⭐⭐⭐ 3 Stars - Good', value=3),
+        app_commands.Choice(name='⭐⭐⭐⭐ 4 Stars - Very Good', value=4),
+        app_commands.Choice(name='⭐⭐⭐⭐⭐ 5 Stars - Excellent', value=5)
+    ])
+    async def feedback_command(self, interaction: discord.Interaction, rating: int, feedback: str):
+        """Submit feedback/testimonial to the support server."""
+        # Feedback/testimonials channel ID
+        FEEDBACK_CHANNEL_ID = 1453356371952275527
+        
+        try:
+            # Get the feedback channel
+            feedback_channel = self.bot.get_channel(FEEDBACK_CHANNEL_ID)
+            
+            if not feedback_channel or not isinstance(feedback_channel, discord.TextChannel):
+                await interaction.response.send_message(
+                    "❌ Could not access the feedback channel. Please join our [support server](https://discord.gg/4TkQYz7qea) and share your feedback there.",
+                    ephemeral=True
+                )
+                return
+            
+            # Create star rating display
+            stars = "⭐" * rating
+            rating_text = ["Poor", "Fair", "Good", "Very Good", "Excellent"][rating - 1]
+            
+            # Choose embed color based on rating
+            colors = {
+                1: discord.Color.red(),
+                2: discord.Color.orange(),
+                3: discord.Color.gold(),
+                4: discord.Color.blue(),
+                5: discord.Color.green()
+            }
+            
+            # Create feedback embed
+            embed = discord.Embed(
+                title="💬 User Feedback & Testimonial",
+                description=feedback,
+                color=colors.get(rating, discord.Color.blue()),
+                timestamp=discord.utils.utcnow()
+            )
+            
+            # Add rating
+            embed.add_field(
+                name="Rating",
+                value=f"{stars} ({rating}/5 - {rating_text})",
+                inline=False
+            )
+            
+            # Add reviewer information
+            embed.add_field(
+                name="From",
+                value=f"{interaction.user.mention} (`{interaction.user.id}`)",
+                inline=True
+            )
+            
+            # Add server information if available
+            if interaction.guild:
+                embed.add_field(
+                    name="Server",
+                    value=f"{interaction.guild.name} (`{interaction.guild.id}`)",
+                    inline=True
+                )
+            else:
+                embed.add_field(
+                    name="Location",
+                    value="Direct Message",
+                    inline=True
+                )
+            
+            embed.set_footer(
+                text=f"User ID: {interaction.user.id}",
+                icon_url=interaction.user.display_avatar.url
+            )
+            
+            # Send to feedback channel
+            await feedback_channel.send(embed=embed)
+            
+            # Confirm to user with different messages based on rating
+            if rating >= 4:
+                message = (
+                    "✅ Thank you for your positive feedback! We're thrilled you're enjoying the bot! 🎉\n\n"
+                    "**Help us grow:**\n"
+                    "Share your experience with others in our [support server](https://discord.gg/4TkQYz7qea)!"
+                )
+            else:
+                message = (
+                    "✅ Thank you for your feedback! We appreciate your honesty and will work on improvements.\n\n"
+                    "**Want to discuss further?**\n"
+                    "Join our support server: https://discord.gg/4TkQYz7qea"
+                )
+            
+            await interaction.response.send_message(message, ephemeral=True)
+            
+        except Exception as e:
+            await interaction.response.send_message(
+                f"❌ An error occurred while submitting your feedback: {str(e)}\n\n"
+                "Please share it directly in our [support server](https://discord.gg/4TkQYz7qea).",
+                ephemeral=True
+            )
+    
+    @app_commands.command(name='timestamp', description='Generate Discord timestamps for any date/time')
+    @app_commands.describe(
+        year='Year (e.g., 2025)',
+        month='Month (1-12)',
+        day='Day of month (1-31)',
+        hour='Hour in 24-hour format (0-23, optional)',
+        minute='Minute (0-59, optional)',
+        utc_offset='UTC offset in hours (e.g., -5 for EST, 5.5 for IST, optional)'
+    )
+    async def timestamp_command(
+        self, 
+        interaction: discord.Interaction,
+        year: int,
+        month: app_commands.Range[int, 1, 12],
+        day: app_commands.Range[int, 1, 31],
+        hour: app_commands.Range[int, 0, 23] = 0,
+        minute: app_commands.Range[int, 0, 59] = 0,
+        utc_offset: app_commands.Range[float, -12, 14] = 0
+    ):
+        """Generate Discord timestamps with all available formats."""
+        try:
+            # Validate the date
+            if day > calendar.monthrange(year, month)[1]:
+                await interaction.response.send_message(
+                    f"❌ Invalid date: {month}/{day}/{year} does not exist!",
+                    ephemeral=True
+                )
+                return
+            
+            # Create datetime object in UTC
+            # User provides time in their timezone, convert to UTC
+            offset_hours = int(utc_offset)
+            offset_minutes = int((utc_offset - offset_hours) * 60)
+            
+            # Create the datetime in user's timezone
+            user_dt = datetime(year, month, day, hour, minute)
+            
+            # Convert to UTC by subtracting the offset
+            utc_dt = user_dt.replace(tzinfo=None)
+            # Subtract offset to get UTC time
+            from datetime import timedelta
+            utc_dt = utc_dt - timedelta(hours=offset_hours, minutes=offset_minutes)
+            
+            # Get Unix timestamp
+            unix_timestamp = int(utc_dt.replace(tzinfo=timezone.utc).timestamp())
+            
+            # Create embed with all timestamp formats
+            embed = discord.Embed(
+                title="⏰ Discord Timestamps",
+                description=f"Timestamps for **{month}/{day}/{year} {hour:02d}:{minute:02d}** (UTC{utc_offset:+.1f})",
+                color=discord.Color.blue()
+            )
+            
+            # Add all timestamp formats
+            formats = [
+                ("Short Time", "t", f"<t:{unix_timestamp}:t>"),
+                ("Long Time", "T", f"<t:{unix_timestamp}:T>"),
+                ("Short Date", "d", f"<t:{unix_timestamp}:d>"),
+                ("Long Date", "D", f"<t:{unix_timestamp}:D>"),
+                ("Short Date/Time", "f", f"<t:{unix_timestamp}:f>"),
+                ("Long Date/Time", "F", f"<t:{unix_timestamp}:F>"),
+                ("Relative Time", "R", f"<t:{unix_timestamp}:R>"),
+            ]
+            
+            format_text = ""
+            for name, code, timestamp_code in formats:
+                # Show both the code and how it renders
+                format_text += f"**{name}** (`{code}`)\n`{timestamp_code}` → {timestamp_code}\n\n"
+            
+            embed.add_field(
+                name="📋 Available Formats",
+                value=format_text.strip(),
+                inline=False
+            )
+            
+            # Add copy-paste section
+            embed.add_field(
+                name="📝 Quick Copy",
+                value=(
+                    f"**Unix Timestamp:** `{unix_timestamp}`\n"
+                    f"**Default:** `<t:{unix_timestamp}>`\n"
+                    f"**Relative:** `<t:{unix_timestamp}:R>`"
+                ),
+                inline=False
+            )
+            
+            embed.set_footer(text="Tip: Click 'Copy' on any code block to use it in your messages!")
+            
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            
+        except ValueError as e:
+            await interaction.response.send_message(
+                f"❌ Invalid date/time: {str(e)}",
+                ephemeral=True
+            )
+        except Exception as e:
+            await interaction.response.send_message(
+                f"❌ An error occurred: {str(e)}",
+                ephemeral=True
+            )
 
 
 async def setup(bot):

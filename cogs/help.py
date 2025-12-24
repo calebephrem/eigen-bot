@@ -7,7 +7,6 @@ from typing import Optional
 # Emoji mapping for each cog category
 COG_EMOJIS = {
     "admin": "🔧",
-    "economy": "💰",
     "fun": "🎭",
     "tags": "🏷️",
     "communitycommands": "👥",
@@ -17,8 +16,8 @@ COG_EMOJIS = {
     "whoisalias": "🔍",
     "utilityextra": "🛠️",
     "invitetracker": "📊",
-    "casino": "🎰",
     "afksystem": "💤",
+    "tickets": "🎫",
     "codebuddyleaderboardcog": "🏆",
     "codebuddyquizcog": "🧠",
     "codebuddyflexcog": "💪",
@@ -27,8 +26,7 @@ COG_EMOJIS = {
 
 # Category descriptions
 COG_DESCRIPTIONS = {
-    "admin": "Administrator commands for managing the bot and economy",
-    "economy": "Complete economy with income, crime, gambling, banking, and more",
+    "admin": "Administrator commands for managing the bot",
     "fun": "Entertainment commands including jokes, trivia, and games",
     "tags": "Create and manage custom text snippets for your server",
     "communitycommands": "Engage your community with quotes, questions, and memes",
@@ -38,8 +36,8 @@ COG_DESCRIPTIONS = {
     "whoisalias": "User information and lookup commands",
     "utilityextra": "Extra utility commands like reminders, dice, and emotes",
     "invitetracker": "Professional invite tracking system with analytics",
-    "casino": "🎲 12 professional casino games: Blackjack (?bj), Poker (?pk), Roulette (?rl), Slots (?s), Dice (?d), and more! Win big or go broke!",
     "afksystem": "💤 Away From Keyboard system - Set AFK status with custom reasons, auto-respond to mentions, and track time away",
+    "tickets": "🎫 Support ticket system - Create and manage support tickets for your server",
     "codebuddyleaderboardcog": "View coding leaderboards, weekly stats, and streaks",
     "codebuddyquizcog": "Test your coding knowledge with quizzes",
     "codebuddyflexcog": "Flex your coding stats and achievements",
@@ -111,10 +109,11 @@ class HelpSelect(discord.ui.Select):
         embed = discord.Embed(
             title="📚 Eigen Bot - Help Menu",
             description=(
-                "Welcome to Eigen Bot! A feature-rich Discord bot with economy, games, and community features.\n\n"
-                "**How to use commands:**\n"
-                "• Prefix: `?command` (e.g., `?balance`)\n"
-                "• Slash: `/command` (e.g., `/balance`)\n\n"
+                "Welcome to Eigen Bot! A feature-rich Discord bot for community engagement, support, and fun.\\n\\n"
+                "**How to use commands:**\\n"
+                "• Prefix: `?command` (e.g., `?help`)\\n"
+                "• Slash: `/command` (e.g., `/help`)\\n\\n"
+                "**Need help?** Join our [Support Server](https://discord.gg/4TkQYz7qea) or use `/support`\\n\\n"
                 "**Select a category below to view commands!**"
             ),
             color=discord.Color.blue()
@@ -273,10 +272,10 @@ class HelpCog(commands.Cog):
         embed = discord.Embed(
             title="📚 Eigen Bot - Help Menu",
             description=(
-                "Welcome to Eigen Bot! A feature-rich Discord bot with economy, games, and community features.\n\n"
-                "**How to use commands:**\n"
-                "• Prefix: `?command` (e.g., `?balance`)\n"
-                "• Slash: `/command` (e.g., `/balance`)\n\n"
+                "Welcome to Eigen Bot! A feature-rich Discord bot for community engagement, support, and fun.\\n\\n"
+                "**How to use commands:**\\n"
+                "• Prefix: `?command` (e.g., `?help`)\\n"
+                "• Slash: `/command` (e.g., `/help`)\\n\\n"
                 "**Select a category below to view commands!**"
             ),
             color=discord.Color.blue()

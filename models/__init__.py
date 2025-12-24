@@ -1,17 +1,8 @@
 """
-Database models for fun2oosh bot.
+Database models for Eigen bot.
+
+Economy models have been moved to another-bot folder.
 """
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from .base import Base
-from .bet import Bet
-from .transaction import Transaction
-from .user import User
-from .wallet import Wallet
-
-
-# Type aliases for convenience
-Session = AsyncSession
-
-__all__ = ['Base', 'User', 'Wallet', 'Transaction', 'Bet', 'Session']
+# This file is kept for future non-economy models
+__all__ = []

@@ -1,3 +1,52 @@
+## [2.0.0] - 2024-12-24
+
+### 🎯 Major Changes - Economy System Separation
+- **BREAKING**: Removed all economy and casino features from main bot
+- Moved economy system to separate bot in \`another-bot/\` folder
+- Removed SQLAlchemy dependency from main bot
+- Simplified bot architecture for community-focused features
+
+### ✨ Added
+- **Ticket System**: Complete support ticket management with Discord threads
+  - Multiple ticket categories (Support, Bug Reports, Partnership, etc.)
+  - Persistent ticket panels with button interface
+  - Ticket claiming and closing functionality
+  - Customizable support team roles
+  - Ticket logging channel support
+  - Auto-incrementing ticket numbers
+- **Database Module**: Created \`utils/database.py\` for centralized database configuration
+- **Admin Commands**: New general admin commands (reload, sync)
+
+### 🗑️ Removed (Moved to another-bot/)
+- **Economy Cog**: All economy commands (balance, work, daily, weekly, etc.)
+- **Casino Cog**: All casino games (blackjack, roulette, slots, etc.)
+- **Economy Models**: User, Wallet, Transaction, Bet models
+- **Economy Utils**: economy_utils.py, anti_fraud.py
+- **Economy Admin Commands**: add_money, reset_economy (moved to admin_economy.py)
+- **Economy Configuration**: Removed economy settings from main config
+
+### 🔄 Changed
+- **Admin Cog**: Replaced with lightweight admin cog (reload, sync commands only)
+- **Help System**: Removed economy/casino references
+- **Bot Description**: Updated to focus on community engagement and support
+- **README.md**: Completely rewritten to reflect new bot focus
+- **Configuration**: Removed database_url and economy settings from main config
+
+### 📝 Documentation
+- Created \`another-bot/README.md\` - Setup guide for economy bot
+- Created \`another-bot/MIGRATION_SUMMARY.md\` - Detailed migration documentation
+- Created \`another-bot/config.py\` - Standalone economy bot configuration
+- Updated main README with new feature set and ticket system documentation
+
+### 🐛 Fixed
+- Fixed missing \`create_info_embed\` function in utils/helpers.py
+- Fixed import errors in tickets.py
+- Fixed database configuration issues
+
+---
+
+## Previous Changelog
+
 bot.Py
 /utils/codingquestions.py
 /cogs/afk.py
