@@ -98,6 +98,7 @@ class Fun2OoshBot(commands.Bot):
             'cogs.codebuddy_flex',
             'cogs.codebuddy_leaderboard',
             'cogs.codebuddy_help',
+            'cogs.daily_quests',
             'cogs.bump',
             'cogs.birthday',
         ]

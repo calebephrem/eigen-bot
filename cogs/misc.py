@@ -24,13 +24,12 @@ class Misc(commands.Cog):
     async def about(self, ctx: commands.Context):
         """Show information about the bot."""
         embed = discord.Embed(
-            title="📚 About Eigen Bot",
+            title="Eigen Bot",
             description=(
-                "**Eigen Bot** is a feature-rich Discord bot for community engagement, "
-                "support tickets, and utility features.\n\n"
-                "Built with ❤️ using discord.py and modern async architecture."
+                "Feature-rich Discord bot for community engagement, "
+                "support tickets, and utilities. Built with discord.py."
             ),
-            color=discord.Color.blue()
+            color=0x000000
         )
         
         # Add bot stats
@@ -39,53 +38,42 @@ class Misc(commands.Cog):
         total_commands = len(self.bot.tree.get_commands())
         
         embed.add_field(
-            name="📊 Statistics",
+            name="Statistics",
             value=(
-                f"🏰 Servers: **{total_guilds}**\n"
-                f"👥 Users: **{total_users:,}**\n"
-                f"⚡ Commands: **{total_commands}**"
+                f"Servers: **{total_guilds}**\n"
+                f"Users: **{total_users:,}**\n"
+                f"Commands: **{total_commands}**"
             ),
             inline=True
         )
         
         embed.add_field(
-            name="🎯 Features",
+            name="Features",
             value=(
-                "🎫 Support Tickets\n"
-                "⭐ Starboard\n"
-                "🏷️ Custom Tags\n"
-                "🗳️ Elections\n"
-                "📊 Invite Tracker\n"
-                "💤 AFK System\n"
-                "🎭 Fun Commands\n"
-                "🛠️ Utilities"
+                "Support Tickets\n"
+                "Starboard\n"
+                "Custom Tags\n"
+                "Elections\n"
+                "Invite Tracker\n"
+                "AFK System\n"
+                "Fun Commands\n"
+                "Utilities"
             ),
             inline=True
         )
         
         embed.add_field(
-            name="🔗 Links",
+            name="Links",
             value=(
-                "[GitHub](https://github.com/TheCodeVerseHub/Eigen-Bot) • "
-                "[Invite Bot](https://discord.com/api/oauth2/authorize) • "
-                "[Support Server](https://discord.gg/4TkQYz7qea)"
+                "[GitHub](https://github.com/TheCodeVerseHub/Eigen-Bot) · "
+                "[Invite](https://discord.com/api/oauth2/authorize) · "
+                "[Support](https://discord.gg/4TkQYz7qea)"
             ),
             inline=False
         )
         
-        embed.add_field(
-            name="💡 Getting Started",
-            value=(
-                "Use `?helpmenu` or `/help` to see all available commands!\n"
-                "Most commands work with both `?` prefix and `/` slash commands."
-            ),
-            inline=False
-        )
-        
-        # Add version and tech info
         embed.set_footer(
-            text=f"Python {discord.__version__} • Made by TheCodeVerseHub",
-            icon_url=self.bot.user.avatar.url if self.bot.user and self.bot.user.avatar else None
+            text=f"discord.py {discord.__version__} · TheCodeVerseHub"
         )
         
         # Set bot thumbnail
@@ -125,26 +113,26 @@ class Misc(commands.Cog):
         if spotify_activity:
             # Create rich embed for Spotify
             embed = discord.Embed(
-                title="🎵 Now Playing on Spotify",
-                description=f"**{target_user.display_name}** is listening to:",
-                color=0x1DB954  # Spotify green
+                title="Now Playing · Spotify",
+                description=f"{target_user.display_name}",
+                color=0x000000
             )
             
             # Song details
             embed.add_field(
-                name="🎵 Track",
+                name="Track",
                 value=f"**[{spotify_activity.title}]({spotify_activity.track_url})**",
                 inline=False
             )
             
             embed.add_field(
-                name="👨‍🎤 Artist(s)",
+                name="Artist",
                 value=", ".join(spotify_activity.artists),
                 inline=True
             )
             
             embed.add_field(
-                name="💿 Album",
+                name="Album",
                 value=spotify_activity.album,
                 inline=True
             )
@@ -163,7 +151,7 @@ class Misc(commands.Cog):
             bar = "━" * filled + "○" + "─" * (bar_length - filled - 1)
             
             embed.add_field(
-                name="⏱️ Duration",
+                name="Duration",
                 value=f"`{current_str}` {bar} `{duration_str}`",
                 inline=False
             )
@@ -172,16 +160,16 @@ class Misc(commands.Cog):
             if spotify_activity.album_cover_url:
                 embed.set_thumbnail(url=spotify_activity.album_cover_url)
             
-            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.display_avatar.url)
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}")
             
         elif music_activity:
             # Found other music activity (not Spotify)
             if True:
                 # Generic music activity
                 embed = discord.Embed(
-                    title="🎵 Now Listening",
-                    description=f"**{target_user.display_name}** is listening to:",
-                    color=discord.Color.blurple()
+                    title="Now Listening",
+                    description=f"{target_user.display_name}",
+                    color=0x000000
                 )
                 
                 embed.add_field(
@@ -235,11 +223,11 @@ class Misc(commands.Cog):
                 )
             
             embed = discord.Embed(
-                title="🎵 No Music Playing",
+                title="No Music Playing",
                 description=message,
-                color=discord.Color.red()
+                color=0x000000
             )
-            embed.set_footer(text="Tip: Check Discord Settings → Activity Privacy → Display current activity")
+            embed.set_footer(text="Activity Privacy must be enabled")
         
         await ctx.send(embed=embed)
 
@@ -275,7 +263,7 @@ class Misc(commands.Cog):
         # Latency
         latency = round(self.bot.latency * 1000)
         
-        embed = discord.Embed(title="🛠️ Diagnostic Info", color=discord.Color.orange())
+        embed = discord.Embed(title="Diagnostic Info", color=0x000000)
         embed.add_field(name="Slash Commands", value=str(slash_commands), inline=True)
         embed.add_field(name="Prefix Commands", value=str(prefix_commands), inline=True)
         embed.add_field(name="Guilds", value=str(guilds), inline=True)
@@ -287,7 +275,7 @@ class Misc(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.hybrid_command(name='bug', description='Report a bug to the bot developers')
+    @commands.hybrid_command(name='bug', description='Report a bug to the bot dev - Only for small bugs')
     @app_commands.describe(bug='Describe the bug you encountered')
     async def bug_report(self, ctx: commands.Context, *, bug: str):
         """Report a bug to the support server."""
@@ -313,37 +301,19 @@ class Misc(commands.Cog):
             
             # Create bug report embed
             embed = discord.Embed(
-                title="🐛 Bug Report",
-                description=bug,
-                color=discord.Color.red(),
-                timestamp=discord.utils.utcnow()
+                title="Bug Report",
+                color=0x000000
             )
             
-            # Add reporter information
-            embed.add_field(
-                name="Reported by",
-                value=f"{user.mention} (`{user.id}`)",
-                inline=True
-            )
+            # Add bug details
+            embed.add_field(name="Details", value="*"+bug+"*", inline=False)
             
-            # Add server information if available
-            if guild:
-                embed.add_field(
-                    name="Server",
-                    value=f"{guild.name} (`{guild.id}`)",
-                    inline=True
-                )
-            else:
-                embed.add_field(
-                    name="Location",
-                    value="Direct Message",
-                    inline=True
-                )
+            # Add reporter and server info inline
+            reporter_info = f"{user.mention} · `{user.id}`"
+            location_info = f"{guild.name} · `{guild.id}`" if guild else "Direct Message"
             
-            embed.set_footer(
-                text=f"User ID: {user.id}",
-                icon_url=user.display_avatar.url
-            )
+            embed.add_field(name="Reported by", value=reporter_info, inline=True)
+            embed.add_field(name="Server", value=location_info, inline=True)
             
             # Send to support channel
             await support_channel.send(embed=embed)
@@ -355,7 +325,10 @@ class Misc(commands.Cog):
                 "Join our support server: https://discord.gg/4TkQYz7qea"
             )
             if ctx.interaction:
-                await ctx.interaction.response.send_message(response, ephemeral=True)
+                if not ctx.interaction.response.is_done():
+                    await ctx.interaction.response.send_message(response, ephemeral=True)
+                else:
+                    await ctx.interaction.followup.send(response, ephemeral=True)
             else:
                 await ctx.send(response)
             
@@ -365,7 +338,10 @@ class Misc(commands.Cog):
                 "Please report this directly in our [support server](https://discord.gg/4TkQYz7qea)."
             )
             if ctx.interaction:
-                await ctx.interaction.response.send_message(response, ephemeral=True)
+                if not ctx.interaction.response.is_done():
+                    await ctx.interaction.response.send_message(response, ephemeral=True)
+                else:
+                    await ctx.interaction.followup.send(response, ephemeral=True)
             else:
                 await ctx.send(response)
     
@@ -373,19 +349,15 @@ class Misc(commands.Cog):
     async def support(self, ctx: commands.Context):
         """Send the support server invite link."""
         embed = discord.Embed(
-            title="💬 Need Help?",
+            title="Support Server",
             description=(
-                "Join our support server for:\n\n"
-                "• Bug reports and feedback\n"
-                "• Feature requests\n"
-                "• General help and questions\n"
-                "• Updates and announcements\n\n"
-                "**[Click here to join!](https://discord.gg/4TkQYz7qea)**"
+                "[discord.gg/4TkQYz7qea](https://discord.gg/4TkQYz7qea)\n\n"
+                "Get help with bug reports, feature requests, questions, and updates."
             ),
-            color=discord.Color.blurple()
+            color=0x000000
         )
         
-        embed.set_footer(text="We're here to help!")
+        embed.set_footer(text="Support")
         
         if ctx.interaction:
             await ctx.interaction.response.send_message(embed=embed, ephemeral=True)
@@ -412,37 +384,19 @@ class Misc(commands.Cog):
             
             # Create feature request embed
             embed = discord.Embed(
-                title="💡 Feature Request",
-                description=feature,
-                color=discord.Color.green(),
-                timestamp=discord.utils.utcnow()
+                title="Feature Request",
+                color=0x000000
             )
             
-            # Add requester information
-            embed.add_field(
-                name="Requested by",
-                value=f"{interaction.user.mention} (`{interaction.user.id}`)",
-                inline=True
-            )
+            # Add feature details
+            embed.add_field(name="Details", value="*"+feature+"*", inline=False)
             
-            # Add server information if available
-            if interaction.guild:
-                embed.add_field(
-                    name="Server",
-                    value=f"{interaction.guild.name} (`{interaction.guild.id}`)",
-                    inline=True
-                )
-            else:
-                embed.add_field(
-                    name="Location",
-                    value="Direct Message",
-                    inline=True
-                )
+            # Add requester and server info inline
+            requester_info = f"{interaction.user.mention} · `{interaction.user.id}`"
+            location_info = f"{interaction.guild.name} · `{interaction.guild.id}`" if interaction.guild else "Direct Message"
             
-            embed.set_footer(
-                text=f"User ID: {interaction.user.id}",
-                icon_url=interaction.user.display_avatar.url
-            )
+            embed.add_field(name="Requested By", value=requester_info, inline=True)
+            embed.add_field(name="Location", value=location_info, inline=True)
             
             # Send to feature requests channel
             await feature_channel.send(embed=embed)
@@ -494,55 +448,21 @@ class Misc(commands.Cog):
             stars = "⭐" * rating
             rating_text = ["Poor", "Fair", "Good", "Very Good", "Excellent"][rating - 1]
             
-            # Choose embed color based on rating
-            colors = {
-                1: discord.Color.red(),
-                2: discord.Color.orange(),
-                3: discord.Color.gold(),
-                4: discord.Color.blue(),
-                5: discord.Color.green()
-            }
-            
-            # Create feedback embed
+            # Create feedback embed with professional black design
             embed = discord.Embed(
-                title="💬 User Feedback & Testimonial",
-                description=feedback,
-                color=colors.get(rating, discord.Color.blue()),
-                timestamp=discord.utils.utcnow()
+                title=f"{stars} {rating}/5 · {rating_text}",
+                color=0x000000
             )
             
-            # Add rating
-            embed.add_field(
-                name="Rating",
-                value=f"{stars} ({rating}/5 - {rating_text})",
-                inline=False
-            )
+            # Add feedback content
+            embed.add_field(name="Feedback", value="*"+feedback+"*", inline=False)
             
-            # Add reviewer information
-            embed.add_field(
-                name="From",
-                value=f"{interaction.user.mention} (`{interaction.user.id}`)",
-                inline=True
-            )
+            # Add reviewer and server info inline
+            reviewer_info = f"{interaction.user.mention} · `{interaction.user.id}`"
+            location_info = f"{interaction.guild.name} · `{interaction.guild.id}`" if interaction.guild else "Direct Message"
             
-            # Add server information if available
-            if interaction.guild:
-                embed.add_field(
-                    name="Server",
-                    value=f"{interaction.guild.name} (`{interaction.guild.id}`)",
-                    inline=True
-                )
-            else:
-                embed.add_field(
-                    name="Location",
-                    value="Direct Message",
-                    inline=True
-                )
-            
-            embed.set_footer(
-                text=f"User ID: {interaction.user.id}",
-                icon_url=interaction.user.display_avatar.url
-            )
+            embed.add_field(name="User", value=reviewer_info, inline=True)
+            embed.add_field(name="Server", value=location_info, inline=True)
             
             # Send to feedback channel
             await feedback_channel.send(embed=embed)
@@ -585,12 +505,26 @@ class Misc(commands.Cog):
         year: int,
         month: app_commands.Range[int, 1, 12],
         day: app_commands.Range[int, 1, 31],
-        hour: app_commands.Range[int, 0, 23] = 0,
-        minute: app_commands.Range[int, 0, 59] = 0,
-        utc_offset: app_commands.Range[float, -12, 14] = 0
+        hour: app_commands.Range[int, 0, 23] = None,
+        minute: app_commands.Range[int, 0, 59] = None,
+        utc_offset: float = 0.0
     ):
         """Generate Discord timestamps with all available formats."""
+        # Set defaults if None
+        if hour is None:
+            hour = 0
+        if minute is None:
+            minute = 0
+            
         try:
+            # Validate UTC offset range
+            if utc_offset < -12 or utc_offset > 14:
+                await interaction.response.send_message(
+                    "❌ UTC offset must be between -12 and +14 hours!",
+                    ephemeral=True
+                )
+                return
+            
             # Validate the date
             if day > calendar.monthrange(year, month)[1]:
                 await interaction.response.send_message(
@@ -618,9 +552,9 @@ class Misc(commands.Cog):
             
             # Create embed with all timestamp formats
             embed = discord.Embed(
-                title="⏰ Discord Timestamps",
-                description=f"Timestamps for **{month}/{day}/{year} {hour:02d}:{minute:02d}** (UTC{utc_offset:+.1f})",
-                color=discord.Color.blue()
+                title="Discord Timestamps",
+                description=f"{month}/{day}/{year} {hour:02d}:{minute:02d} (UTC{utc_offset:+.1f})",
+                color=0x000000
             )
             
             # Add all timestamp formats
@@ -640,14 +574,14 @@ class Misc(commands.Cog):
                 format_text += f"**{name}** (`{code}`)\n`{timestamp_code}` → {timestamp_code}\n\n"
             
             embed.add_field(
-                name="📋 Available Formats",
+                name="Available Formats",
                 value=format_text.strip(),
                 inline=False
             )
             
             # Add copy-paste section
             embed.add_field(
-                name="📝 Quick Copy",
+                name="Quick Copy",
                 value=(
                     f"**Unix Timestamp:** `{unix_timestamp}`\n"
                     f"**Default:** `<t:{unix_timestamp}>`\n"
@@ -656,7 +590,7 @@ class Misc(commands.Cog):
                 inline=False
             )
             
-            embed.set_footer(text="Tip: Click 'Copy' on any code block to use it in your messages!")
+            embed.set_footer(text="Click 'Copy' on any code block to use it")
             
             await interaction.response.send_message(embed=embed, ephemeral=True)
             
@@ -670,6 +604,28 @@ class Misc(commands.Cog):
                 f"❌ An error occurred: {str(e)}",
                 ephemeral=True
             )
+
+    @app_commands.command(name='say', description='Make the bot say something (Admin only)')
+    @app_commands.describe(text='The text you want the bot to say')
+    @app_commands.default_permissions(administrator=True)
+    async def say(self, interaction: discord.Interaction, text: str):
+        """Make the bot send a message (admin only to prevent abuse)."""
+        # Double-check permissions (extra safety)
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message(
+                "❌ This command is restricted to administrators only.",
+                ephemeral=True
+            )
+            return
+        
+        # Send the text in the channel
+        await interaction.channel.send(text)
+        
+        # Confirm to admin (ephemeral so only they see it)
+        await interaction.response.send_message(
+            "✅ Message sent!",
+            ephemeral=True
+        )
 
 
 async def setup(bot):

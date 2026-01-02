@@ -6,7 +6,7 @@ class CodeBuddyHelpCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="help", description="Get help and information about CodeBuddy bot commands")
+    @app_commands.command(name="codehelp", description="Get help and information about CodeBuddy bot commands")
     async def help_command(self, interaction: discord.Interaction):
         """Displays help information about all available commands."""
         

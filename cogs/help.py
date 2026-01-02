@@ -6,22 +6,23 @@ from typing import Optional
 
 # Emoji mapping for each cog category
 COG_EMOJIS = {
-    "admin": "🔧",
-    "fun": "🎭",
-    "tags": "🏷️",
-    "communitycommands": "👥",
-    "election": "🗳️",
-    "misc": "📝",
-    "starboardsystem": "⭐",
-    "whoisalias": "🔍",
-    "utilityextra": "🛠️",
-    "invitetracker": "📊",
-    "afksystem": "💤",
-    "tickets": "🎫",
-    "codebuddyleaderboardcog": "🏆",
-    "codebuddyquizcog": "🧠",
-    "codebuddyflexcog": "💪",
-    "codebuddyhelpcog": "ℹ️",
+    "admin": "",
+    "fun": "",
+    "tags": "",
+    "communitycommands": "",
+    "election": "",
+    "misc": "",
+    "starboardsystem": "",
+    "whoisalias": "",
+    "utilityextra": "",
+    "invitetracker": "",
+    "afksystem": "",
+    "tickets": "",
+    "codebuddyleaderboardcog": "",
+    "codebuddyquizcog": "",
+    "codebuddyflexcog": "",
+    "codebuddyhelpcog": "",
+    "dailyquestscog": "📋",
 }
 
 # Category descriptions
@@ -36,12 +37,13 @@ COG_DESCRIPTIONS = {
     "whoisalias": "User information and lookup commands",
     "utilityextra": "Extra utility commands like reminders, dice, and emotes",
     "invitetracker": "Professional invite tracking system with analytics",
-    "afksystem": "💤 Away From Keyboard system - Set AFK status with custom reasons, auto-respond to mentions, and track time away",
-    "tickets": "🎫 Support ticket system - Create and manage support tickets for your server",
+    "afksystem": " Away From Keyboard system - Set AFK status with custom reasons, auto-respond to mentions, and track time away",
+    "tickets": " Support ticket system - Create and manage support tickets for your server",
     "codebuddyleaderboardcog": "View coding leaderboards, weekly stats, and streaks",
     "codebuddyquizcog": "Test your coding knowledge with quizzes",
     "codebuddyflexcog": "Flex your coding stats and achievements",
     "codebuddyhelpcog": "Help and information for CodeBuddy features",
+    "dailyquestscog": "Complete daily challenges to earn rewards! Solve quizzes, vote, and earn streak freezes & bonus hints",
 }
 
 
@@ -54,17 +56,35 @@ class HelpSelect(discord.ui.Select):
         # Build options from loaded cogs
         options = [
             discord.SelectOption(
-                label="🏠 Home",
+                label="Home",
                 value="home",
-                description="Return to main help menu",
-                emoji="🏠"
+                description="Return to main help menu"
             )
         ]
+        
+        # Track if we've added the Quiz category
+        quiz_added = False
+        quiz_command_count = 0
+        
+        # Cogs to merge into Misc
+        merged_into_misc = ['birthday', 'bump', 'election', 'starboardsystem', 'tags']
         
         # Add options for each loaded cog (use actual cog names from bot.cogs)
         for cog_name, cog in sorted(bot.cogs.items()):
             # Skip help cog itself
             if cog_name.lower() == 'helpcog':
+                continue
+            
+            # Check if this is a CodeBuddy cog
+            if cog_name.lower().startswith('codebuddy'):
+                # Count commands for the unified Quiz category
+                visible_count = sum(1 for cmd in cog.get_commands() 
+                                  if not getattr(cmd, 'hidden', False) and cmd.enabled)
+                quiz_command_count += visible_count
+                continue  # Skip adding individual CodeBuddy cogs
+            
+            # Skip cogs that are merged into Misc
+            if cog_name.lower() in merged_into_misc:
                 continue
             
             # Get visible commands count
@@ -74,17 +94,23 @@ class HelpSelect(discord.ui.Select):
             if visible_count == 0:
                 continue
                 
-            emoji = COG_EMOJIS.get(cog_name.lower(), "📁")
             description = COG_DESCRIPTIONS.get(cog_name.lower(), "View commands in this category")
             
             options.append(
                 discord.SelectOption(
                     label=f"{cog_name}",
                     value=cog_name.lower(),
-                    description=f"{description[:50]}",
-                    emoji=emoji
+                    description=f"{description[:50]}"
                 )
             )
+        
+        # Add unified Quiz category if there are CodeBuddy commands
+        if quiz_command_count > 0:
+            options.insert(1, discord.SelectOption(
+                label="Quiz",
+                value="quiz",
+                description="Coding quizzes, leaderboards, and stats"
+            ))
         
         super().__init__(
             placeholder="Select a category to view commands...",
@@ -107,44 +133,188 @@ class HelpSelect(discord.ui.Select):
     def _create_home_embed(self) -> discord.Embed:
         """Create the main help embed."""
         embed = discord.Embed(
-            title="📚 Eigen Bot - Help Menu",
+            title="Eigen Bot · Help",
             description=(
-                "Welcome to Eigen Bot! A feature-rich Discord bot for community engagement, support, and fun.\\n\\n"
-                "**How to use commands:**\\n"
-                "• Prefix: `?command` (e.g., `?help`)\\n"
-                "• Slash: `/command` (e.g., `/help`)\\n\\n"
-                "**Need help?** Join our [Support Server](https://discord.gg/4TkQYz7qea) or use `/support`\\n\\n"
-                "**Select a category below to view commands!**"
+                "Feature-rich Discord bot for community engagement, support, and utilities.\n\n"
+                "**Commands:**\n"
+                "Prefix: `?command` (e.g. `?helpmenu`)\n"
+                "Slash: `/command` (e.g. `/help`)\n\n"
+                "**Support:** [discord.gg/4TkQYz7qea](https://discord.gg/4TkQYz7qea) \n\n"
+                "*Select a category below to view commands*"
             ),
-            color=discord.Color.blue()
+            color=0x000000
         )
         
         # Add category overview (use actual loaded cogs)
         categories = []
+        quiz_count = 0
+        merged_into_misc = ['birthday', 'bump', 'election', 'starboardsystem', 'tags']
+        misc_count = 0
+        
         for cog_name, cog in sorted(self.bot.cogs.items()):
             # Skip help cog
             if cog_name.lower() == 'helpcog':
+                continue
+            
+            # Count CodeBuddy commands separately
+            if cog_name.lower().startswith('codebuddy'):
+                visible_count = sum(1 for cmd in cog.get_commands() 
+                                  if not getattr(cmd, 'hidden', False) and cmd.enabled)
+                quiz_count += visible_count
+                continue
+            
+            # Count commands from cogs merged into Misc
+            if cog_name.lower() in merged_into_misc or cog_name.lower() == 'misc':
+                visible_count = sum(1 for cmd in cog.get_commands() 
+                                  if not getattr(cmd, 'hidden', False) and cmd.enabled)
+                misc_count += visible_count
                 continue
             
             visible_count = sum(1 for cmd in cog.get_commands() 
                               if not getattr(cmd, 'hidden', False) and cmd.enabled)
             
             if visible_count > 0:
-                emoji = COG_EMOJIS.get(cog_name.lower(), "📁")
-                categories.append(f"{emoji} **{cog_name}** - {visible_count} commands")
+                categories.append(f"**{cog_name}** · {visible_count} commands")
+        
+        # Add Quiz category if there are CodeBuddy commands
+        if quiz_count > 0:
+            categories.insert(0, f"**Quiz** · {quiz_count} commands")
+        
+        # Add Misc category with merged commands
+        if misc_count > 0:
+            categories.insert(0 if quiz_count == 0 else 1, f"**Misc** · {misc_count} commands")
         
         if categories:
             embed.add_field(
-                name="📂 Available Categories",
-                value="\n".join(categories),
+                name="Available Categories",
+                value="\n".join("- "+cat for cat in categories),
                 inline=False
             )
         
-        embed.set_footer(text="Use ?helpmenu <command> for detailed command help • Tip: Try the dropdown menu!")
+        embed.set_footer(text="Use ?helpmenu <command> for detailed command help")
         return embed
     
     def _create_category_embed(self, cog_name: str) -> discord.Embed:
         """Create embed for a specific category."""
+        
+        # Handle special Quiz category that combines all CodeBuddy cogs
+        if cog_name.lower() == 'quiz':
+            embed = discord.Embed(
+                title="Quiz Commands",
+                description="Coding quizzes, leaderboards, and personal statistics",
+                color=0x000000
+            )
+            
+            # Collect all commands from CodeBuddy cogs
+            commands_list = []
+            for name, cog in self.bot.cogs.items():
+                if name.lower().startswith('codebuddy'):
+                    for cmd in cog.get_commands():
+                        if not getattr(cmd, 'hidden', False) and cmd.enabled:
+                            signature = f"{cmd.name} {cmd.signature}".strip()
+                            desc = cmd.short_doc or "No description"
+                            if len(desc) > 80:
+                                desc = desc[:77] + "..."
+                            commands_list.append(f"`{signature}`\n*{desc}*")
+            
+            if commands_list:
+                # Split into chunks by character count (max 1000 to be safe)
+                current_chunk = []
+                current_length = 0
+                field_number = 0
+                
+                for cmd_text in commands_list:
+                    cmd_length = len(cmd_text) + 2  # +2 for "\n\n" separator
+                    
+                    # If adding this command would exceed limit, start new field
+                    if current_length + cmd_length > 1000 and current_chunk:
+                        field_name = "Commands" if field_number == 0 else f"Commands (continued {field_number})"
+                        embed.add_field(
+                            name=field_name,
+                            value="\n\n".join(current_chunk),
+                            inline=False
+                        )
+                        current_chunk = []
+                        current_length = 0
+                        field_number += 1
+                    
+                    current_chunk.append(cmd_text)
+                    current_length += cmd_length
+                
+                # Add remaining commands
+                if current_chunk:
+                    field_name = "Commands" if field_number == 0 else f"Commands (continued {field_number})"
+                    embed.add_field(
+                        name=field_name,
+                        value="\n\n".join(current_chunk),
+                        inline=False
+                    )
+            else:
+                embed.description = "No commands available in this category."
+            
+            embed.set_footer(text=f"Use ?helpmenu <command> for detailed help")
+            return embed
+        
+        # Handle special Misc category that combines multiple cogs
+        if cog_name.lower() == 'misc':
+            merged_cogs = ['misc', 'birthday', 'bump', 'election', 'starboardsystem', 'tags']
+            
+            embed = discord.Embed(
+                title="Misc Commands",
+                description="Support, feedback, birthdays, elections, starboard, tags, and more",
+                color=0x000000
+            )
+            
+            # Collect all commands from merged cogs
+            commands_list = []
+            for name, cog in self.bot.cogs.items():
+                if name.lower() in merged_cogs:
+                    for cmd in cog.get_commands():
+                        if not getattr(cmd, 'hidden', False) and cmd.enabled:
+                            signature = f"{cmd.name} {cmd.signature}".strip()
+                            desc = cmd.short_doc or "No description"
+                            if len(desc) > 80:
+                                desc = desc[:77] + "..."
+                            commands_list.append(f"`{signature}`\n*{desc}*")
+            
+            if commands_list:
+                # Split into chunks by character count (max 1000 to be safe)
+                current_chunk = []
+                current_length = 0
+                field_number = 0
+                
+                for cmd_text in commands_list:
+                    cmd_length = len(cmd_text) + 2  # +2 for "\n\n" separator
+                    
+                    # If adding this command would exceed limit, start new field
+                    if current_length + cmd_length > 1000 and current_chunk:
+                        field_name = "Commands" if field_number == 0 else f"Commands (continued {field_number})"
+                        embed.add_field(
+                            name=field_name,
+                            value="\n\n".join(current_chunk),
+                            inline=False
+                        )
+                        current_chunk = []
+                        current_length = 0
+                        field_number += 1
+                    
+                    current_chunk.append(cmd_text)
+                    current_length += cmd_length
+                
+                # Add remaining commands
+                if current_chunk:
+                    field_name = "Commands" if field_number == 0 else f"Commands (continued {field_number})"
+                    embed.add_field(
+                        name=field_name,
+                        value="\n\n".join(current_chunk),
+                        inline=False
+                    )
+            else:
+                embed.description = "No commands available in this category."
+            
+            embed.set_footer(text=f"Use ?helpmenu <command> for detailed help")
+            return embed
+        
         # Find the cog (case-insensitive)
         cog = None
         actual_cog_name = None
@@ -156,18 +326,17 @@ class HelpSelect(discord.ui.Select):
         
         if cog is None:
             return discord.Embed(
-                title="❌ Category Not Found",
+                title="Category Not Found",
                 description=f"The category `{cog_name}` could not be found.",
-                color=discord.Color.red()
+                color=0x000000
             )
         
-        emoji = COG_EMOJIS.get(cog_name.lower(), "📁")
         description = COG_DESCRIPTIONS.get(cog_name.lower(), "Commands in this category")
         
         embed = discord.Embed(
-            title=f"{emoji} {actual_cog_name} Commands",
+            title=f"{actual_cog_name} Commands",
             description=description,
-            color=discord.Color.green()
+            color=0x000000
         )
         
         # Group commands by type or just list them
@@ -180,7 +349,7 @@ class HelpSelect(discord.ui.Select):
                 # Limit description length to prevent overflow
                 if len(desc) > 80:
                     desc = desc[:77] + "..."
-                commands_list.append(f"`{signature}`\n└─ {desc}")
+                commands_list.append(f"`{signature}`\n*{desc}*")
         
         if commands_list:
             # Split into chunks by character count (max 1000 to be safe)
@@ -217,7 +386,7 @@ class HelpSelect(discord.ui.Select):
         else:
             embed.description = "No commands available in this category."
         
-        embed.set_footer(text=f"Use ?helpmenu <command> for detailed help • Select another category from the menu")
+        embed.set_footer(text=f"Use ?helpmenu <command> for detailed help")
         return embed
 
 
@@ -234,7 +403,7 @@ class HelpView(discord.ui.View):
         """Only allow the command author to use the dropdown."""
         if interaction.user.id != self.author_id:
             await interaction.response.send_message(
-                "❌ This help menu is not for you! Use `?helpmenu` to get your own.",
+                "This help menu is not for you. Use `?helpmenu` to get your own.",
                 ephemeral=True
             )
             return False
@@ -258,54 +427,43 @@ class HelpCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="helpmenu", description="Show help for commands or a specific command/cog")
-    @app_commands.describe(query="Optional command or cog name to show detailed help for")
+    @commands.command(name="helpmenu", description="Show help for commands or a specific command/cog")
     async def helpmenu(self, ctx: commands.Context, *, query: Optional[str] = None):
         """Show interactive help menu or detailed help for a specific command/category."""
+        await self._show_help(ctx, query)
+    
+    @app_commands.command(name="help", description="Show help for commands or a specific command/cog")
+    @app_commands.describe(query="Optional command or cog name to show detailed help for")
+    async def help_slash(self, interaction: discord.Interaction, query: Optional[str] = None):
+        """Show interactive help menu or detailed help for a specific command/category (slash version)."""
+        # If a specific command or cog name was provided, show detailed help
+        if query:
+            await self._detailed_help_slash(interaction, query)
+            return
+
+        # Create the view with dropdown
+        view = HelpView(self.bot, interaction.user.id)
+        
+        # Get the home embed from the select menu
+        select = view.children[0]
+        embed = select._create_home_embed()
+        
+        # Send with the view
+        await interaction.response.send_message(embed=embed, view=view)
+    
+    async def _show_help(self, ctx: commands.Context, query: Optional[str] = None):
+        """Internal method to show help menu."""
         
         # If a specific command or cog name was provided, show detailed help
         if query:
             await self._detailed_help(ctx, query)
             return
 
-        # Create main help embed with dropdown menu
-        embed = discord.Embed(
-            title="📚 Eigen Bot - Help Menu",
-            description=(
-                "Welcome to Eigen Bot! A feature-rich Discord bot for community engagement, support, and fun.\\n\\n"
-                "**How to use commands:**\\n"
-                "• Prefix: `?command` (e.g., `?help`)\\n"
-                "• Slash: `/command` (e.g., `/help`)\\n\\n"
-                "**Select a category below to view commands!**"
-            ),
-            color=discord.Color.blue()
-        )
-        
-        # Add category overview
-        categories = []
-        for cog_name, cog in sorted(self.bot.cogs.items()):
-            # Skip help cog
-            if cog_name.lower() == 'helpcog':
-                continue
-            
-            visible_count = sum(1 for cmd in cog.get_commands() 
-                              if not getattr(cmd, 'hidden', False) and cmd.enabled)
-            
-            if visible_count > 0:
-                emoji = COG_EMOJIS.get(cog_name.lower(), "📁")
-                categories.append(f"{emoji} **{cog_name}** - {visible_count} commands")
-        
-        if categories:
-            embed.add_field(
-                name="📂 Available Categories",
-                value="\n".join(categories),
-                inline=False
-            )
-        
-        embed.set_footer(text="Use ?helpmenu <command> for detailed command help • Tip: Try the dropdown menu!")
-        
-        # Create view with dropdown
+        # Create view with dropdown and get the embed from it
         view = HelpView(self.bot, ctx.author.id)
+        select = view.children[0]
+        embed = select._create_home_embed()
+        
         await ctx.send(embed=embed, view=view)
 
     async def _detailed_help(self, ctx: commands.Context, query: str):
@@ -314,7 +472,7 @@ class HelpCog(commands.Cog):
         cmd = self.bot.get_command(query)
         if cmd:
             embed = discord.Embed(
-                title=f"📖 Command: {cmd.qualified_name}",
+                title=f" Command: {cmd.qualified_name}",
                 color=discord.Color.blue()
             )
             
@@ -365,7 +523,7 @@ class HelpCog(commands.Cog):
                 break
         
         if cog and actual_cog_name:
-            emoji = COG_EMOJIS.get(actual_cog_name.lower(), "📁")
+            emoji = COG_EMOJIS.get(actual_cog_name.lower(), "")
             description = COG_DESCRIPTIONS.get(actual_cog_name.lower(), "Commands in this category")
             
             embed = discord.Embed(
@@ -402,9 +560,89 @@ class HelpCog(commands.Cog):
         # If nothing found
         await ctx.send(
             embed=discord.Embed(
-                title="❌ Not Found",
+                title=" Not Found",
                 description=f"No command or category named `{query}` was found.\n\nUse `?helpmenu` to see all available commands.",
                 color=discord.Color.red()
+            )
+        )
+
+    async def _detailed_help_slash(self, interaction: discord.Interaction, query: str):
+        """Show detailed help for a specific command or category (slash version)."""
+        # Try to find a command first
+        cmd = self.bot.get_command(query)
+        if cmd:
+            embed = discord.Embed(
+                title=f"Command: {cmd.qualified_name}",
+                color=0x000000
+            )
+            
+            # Add usage
+            usage = f"?{cmd.qualified_name} {cmd.signature}".strip()
+            embed.add_field(
+                name="Usage",
+                value=f"`{usage}`",
+                inline=False
+            )
+            
+            # Add description
+            description = cmd.help or cmd.short_doc or "No description available."
+            embed.add_field(
+                name="Description",
+                value=description,
+                inline=False
+            )
+            
+            await interaction.response.send_message(embed=embed)
+            return
+
+        # Try to find a cog (case-insensitive)
+        cog = None
+        actual_cog_name = None
+        for name, c in self.bot.cogs.items():
+            if name.lower() == query.lower():
+                cog = c
+                actual_cog_name = name
+                break
+        
+        if cog and actual_cog_name:
+            description = COG_DESCRIPTIONS.get(actual_cog_name.lower(), "Commands in this category")
+            
+            embed = discord.Embed(
+                title=f"{actual_cog_name} Commands",
+                description=description,
+                color=0x000000
+            )
+            
+            commands_list = []
+            for c in cog.get_commands():
+                if not getattr(c, 'hidden', False) and c.enabled:
+                    signature = f"{c.name} {c.signature}".strip()
+                    desc = c.short_doc or "No description"
+                    commands_list.append(f"`{signature}`\n*{desc}*")
+
+            if commands_list:
+                # Split into chunks if too long
+                chunk_size = 10
+                for i in range(0, len(commands_list), chunk_size):
+                    chunk = commands_list[i:i+chunk_size]
+                    field_name = "Commands" if i == 0 else "Commands (continued)"
+                    embed.add_field(
+                        name=field_name,
+                        value="\n\n".join(chunk),
+                        inline=False
+                    )
+            else:
+                embed.description = "No visible commands in this category."
+
+            await interaction.response.send_message(embed=embed)
+            return
+
+        # If nothing found
+        await interaction.response.send_message(
+            embed=discord.Embed(
+                title="Not Found",
+                description=f"No command or category named `{query}` was found.\n\nUse `/help` to see all available commands.",
+                color=0x000000
             )
         )
 

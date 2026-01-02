@@ -12,6 +12,23 @@ Eigen Bot is an all-in-one Discord bot designed for thriving communities. Built 
 
 ---
 
+## Command Types
+
+Eigen Bot supports **hybrid commands** - both prefix and slash commands:
+
+- **Prefix Commands** (Legacy): `?command` (e.g., `?dailyquest`, `?helpmenu`)
+  - Most commands use prefix commands for backward compatibility
+  - Fast, familiar, and don't require slash command permissions
+  
+- **Slash Commands** (Modern): `/command` (e.g., `/help`, `/timestamp`)
+  - Selected commands available as slash commands for modern Discord experience
+  - Auto-complete and built-in Discord UI
+  - Limited to essential commands to stay within Discord's 100 command limit
+
+**💡 Tip**: Use `?helpmenu` or `/help` to explore all available commands!
+
+---
+
 ## Core Features
 
 ### **🎫 Ticket System**
@@ -70,6 +87,31 @@ Engage your community with coding challenges and leaderboards:
 - **Leaderboards**: Weekly, all-time, and streak tracking
 - **Stats & Flex**: Personal statistics and shareable stat cards
 - **Engagement**: Earn points for correct answers and climb the ranks
+
+### **📋 Daily Quest System**
+Complete daily challenges to earn powerful rewards! Inspired by popular quest systems:
+
+**Features:**
+- **Daily Checklist**: Reset every 24 hours with fresh challenges
+- **Quest Tasks**:
+  - Solve 5 Basic CodeBuddy Quizzes
+  - Vote for the Bot on top.gg (coming soon!)
+- **Rewards**:
+  - 🧊 **Streak Freezes**: Automatically protect your quiz streak when you answer wrong
+  - 💡 **Bonus Hints**: Use hints to eliminate wrong answers (ephemeral messages)
+- **Progress Tracking**: Monitor your daily quest completion in real-time
+
+**Commands:**
+- `?dailyquest` / `?dq` / `?quests` - View daily quest progress
+- `/dailyquest` - View quest progress (slash command)
+- `?bonushint` / `?hint` - Use a bonus hint on active quiz
+- `?inventory` / `?inv` - Check your streak freezes and bonus hints
+
+**How It Works:**
+1. Complete 5 quiz questions correctly
+2. Vote for the bot (when available)
+3. Earn 1 Streak Freeze + 1 Bonus Hint
+4. Use rewards strategically to maintain your streak and climb leaderboards!
 
 ### **🎭 Fun Commands**
 Entertainment and engagement features:

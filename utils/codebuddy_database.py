@@ -16,6 +16,19 @@ async def init_db():
             )
         """)
         
+        # Daily quests table
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS daily_quests (
+                user_id INTEGER PRIMARY KEY,
+                quest_date DATE NOT NULL,
+                quizzes_completed INTEGER NOT NULL DEFAULT 0,
+                voted_today INTEGER NOT NULL DEFAULT 0,
+                quest_completed INTEGER NOT NULL DEFAULT 0,
+                streak_freezes INTEGER NOT NULL DEFAULT 0,
+                bonus_hints INTEGER NOT NULL DEFAULT 0
+            )
+        """)
+        
         # Weekly leaderboard table
         # Note: user_id is NOT a primary key here because we might want to store history,
         # or at least we need (user_id, week_start) to be unique.
@@ -285,4 +298,177 @@ async def get_score_gap(user_id: int):
             return higher_score - score, higher_id
         else:
             return None, None  # Kein höherer Spieler = User ist #1
+
+
+# ========== Daily Quests Functions ==========
+
+async def get_daily_quest_progress(user_id: int):
+    """
+    Get the daily quest progress for a user.
+    Returns: (quest_date, quizzes_completed, voted_today, quest_completed, streak_freezes, bonus_hints)
+    """
+    today = datetime.date.today()
+    
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT quest_date, quizzes_completed, voted_today, quest_completed, streak_freezes, bonus_hints FROM daily_quests WHERE user_id = ?",
+            (user_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if not row:
+            # Initialize new quest entry for today
+            await db.execute(
+                "INSERT INTO daily_quests (user_id, quest_date, quizzes_completed, voted_today, quest_completed, streak_freezes, bonus_hints) VALUES (?, ?, 0, 0, 0, 0, 0)",
+                (user_id, today)
+            )
+            await db.commit()
+            return (today, 0, 0, 0, 0, 0)
+        
+        quest_date_str, quizzes, voted, completed, freezes, hints = row
+        quest_date = datetime.datetime.strptime(quest_date_str, "%Y-%m-%d").date()
+        
+        # Check if quest is from a previous day - reset if so
+        if quest_date < today:
+            await db.execute(
+                "UPDATE daily_quests SET quest_date = ?, quizzes_completed = 0, voted_today = 0, quest_completed = 0 WHERE user_id = ?",
+                (today, user_id)
+            )
+            await db.commit()
+            return (today, 0, 0, 0, freezes, hints)
+        
+        return (quest_date, quizzes, voted, completed, freezes, hints)
+
+async def increment_quest_quiz_count(user_id: int):
+    """
+    Increment the quiz count for today's quest.
+    Returns True if quest was completed with this quiz.
+    """
+    today = datetime.date.today()
+    
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Get current progress
+        progress = await get_daily_quest_progress(user_id)
+        _, quizzes, voted, completed, freezes, hints = progress
+        
+        # Don't increment if already at 5 or more
+        if quizzes >= 5:
+            return False
+        
+        new_count = quizzes + 1
+        
+        # Check if quest is now complete
+        quest_complete = (new_count >= 5 and voted == 1 and completed == 0)
+        
+        if quest_complete:
+            # Quest completed! Award rewards
+            await db.execute(
+                "UPDATE daily_quests SET quizzes_completed = ?, quest_completed = 1, streak_freezes = streak_freezes + 1, bonus_hints = bonus_hints + 1 WHERE user_id = ?",
+                (new_count, user_id)
+            )
+        else:
+            await db.execute(
+                "UPDATE daily_quests SET quizzes_completed = ? WHERE user_id = ?",
+                (new_count, user_id)
+            )
+        
+        await db.commit()
+        return quest_complete
+
+async def mark_quest_voted(user_id: int):
+    """
+    Mark that the user has voted today.
+    Returns True if quest was completed with this vote.
+    """
+    today = datetime.date.today()
+    
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Get current progress
+        progress = await get_daily_quest_progress(user_id)
+        _, quizzes, voted, completed, freezes, hints = progress
+        
+        # Don't mark if already voted
+        if voted == 1:
+            return False
+        
+        # Check if quest is now complete
+        quest_complete = (quizzes >= 5 and completed == 0)
+        
+        if quest_complete:
+            # Quest completed! Award rewards
+            await db.execute(
+                "UPDATE daily_quests SET voted_today = 1, quest_completed = 1, streak_freezes = streak_freezes + 1, bonus_hints = bonus_hints + 1 WHERE user_id = ?",
+                (user_id,)
+            )
+        else:
+            await db.execute(
+                "UPDATE daily_quests SET voted_today = 1 WHERE user_id = ?",
+                (user_id,)
+            )
+        
+        await db.commit()
+        return quest_complete
+
+async def use_streak_freeze(user_id: int):
+    """
+    Use a streak freeze to prevent streak reset.
+    Returns True if freeze was available and used.
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT streak_freezes FROM daily_quests WHERE user_id = ?",
+            (user_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if not row or row[0] <= 0:
+            return False
+        
+        # Use one freeze
+        await db.execute(
+            "UPDATE daily_quests SET streak_freezes = streak_freezes - 1 WHERE user_id = ?",
+            (user_id,)
+        )
+        await db.commit()
+        return True
+
+async def use_bonus_hint(user_id: int):
+    """
+    Use a bonus hint for a quiz.
+    Returns True if hint was available and used.
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT bonus_hints FROM daily_quests WHERE user_id = ?",
+            (user_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if not row or row[0] <= 0:
+            return False
+        
+        # Use one hint
+        await db.execute(
+            "UPDATE daily_quests SET bonus_hints = bonus_hints - 1 WHERE user_id = ?",
+            (user_id,)
+        )
+        await db.commit()
+        return True
+
+async def get_quest_rewards(user_id: int):
+    """
+    Get the current number of streak freezes and bonus hints.
+    Returns: (streak_freezes, bonus_hints)
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT streak_freezes, bonus_hints FROM daily_quests WHERE user_id = ?",
+            (user_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if not row:
+            return (0, 0)
+        
+        return row
 

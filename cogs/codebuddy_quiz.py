@@ -4,7 +4,16 @@ from discord import app_commands
 import random
 import os
 from typing import cast
-from utils.codebuddy_database import increment_user_score, reset_user_streak, get_leaderboard, get_user_stats, get_user_rank, get_score_gap
+from utils.codebuddy_database import (
+    increment_user_score, 
+    reset_user_streak, 
+    get_leaderboard, 
+    get_user_stats, 
+    get_user_rank, 
+    get_score_gap,
+    increment_quest_quiz_count,
+    use_streak_freeze
+)
 from utils.codingquestions import get_random_question
 
 class CodeBuddyQuizCog(commands.Cog):
@@ -108,6 +117,23 @@ class CodeBuddyQuizCog(commands.Cog):
                     await increment_user_score(user_id, points)
                 except Exception as e:
                     print(f"[Error incrementing user score]: {e}")
+                
+                # Update daily quest progress
+                try:
+                    quest_completed = await increment_quest_quiz_count(user_id)
+                    if quest_completed:
+                        # Notify user about quest completion
+                        try:
+                            quest_embed = discord.Embed(
+                                title="Daily Quest Completed!",
+                                description=f"{message.author.mention} You completed your daily quest!\n\n**Rewards Earned:**\n• 1 Streak Freeze\n• 1 Bonus Hint\n\nUse `?inventory` to check your rewards!",
+                                color=0x000000
+                            )
+                            await message.channel.send(embed=quest_embed)
+                        except Exception as e:
+                            print(f"[Error sending quest completion message]: {e}")
+                except Exception as e:
+                    print(f"[Error updating quest progress]: {e}")
 
                 try:
                     lb = await get_leaderboard(100)
@@ -151,18 +177,41 @@ class CodeBuddyQuizCog(commands.Cog):
             # Falsche Antwort
             else:
                 self.ignored_users.add(user_id)
+                
+                # Try to use streak freeze first
+                freeze_used = False
                 try:
-                    await reset_user_streak(user_id)
+                    freeze_used = await use_streak_freeze(user_id)
                 except Exception as e:
-                    print(f"[Error resetting user streak]: {e}")
+                    print(f"[Error checking streak freeze]: {e}")
+                
+                if freeze_used:
+                    # Streak was protected!
+                    try:
+                        await message.add_reaction("❌")
+                        freeze_embed = discord.Embed(
+                            title="Streak Freeze Activated!",
+                            description=f"{message.author.mention} Wrong answer, but your **Streak Freeze** protected your streak!\n\nYour streak remains intact.",
+                            color=0x000000
+                        )
+                        freeze_embed.set_footer(text="Earn more freezes by completing daily quests!")
+                        await message.channel.send(embed=freeze_embed)
+                    except Exception as e:
+                        print(f"[Error sending freeze message]: {e}")
+                else:
+                    # No freeze available, reset streak
+                    try:
+                        await reset_user_streak(user_id)
+                    except Exception as e:
+                        print(f"[Error resetting user streak]: {e}")
 
-                try:
-                    await message.add_reaction("❌")
-                    await message.channel.send(f"{message.author.mention} ❌ Wrong answer! Streak reset to 0.")
-                except discord.Forbidden:
-                    pass
-                except Exception as e:
-                    print(f"[Error sending wrong answer message]: {e}")
+                    try:
+                        await message.add_reaction("❌")
+                        await message.channel.send(f"{message.author.mention} Wrong answer! Streak reset to 0.")
+                    except discord.Forbidden:
+                        pass
+                    except Exception as e:
+                        print(f"[Error sending wrong answer message]: {e}")
 
         except Exception as e:
             print(f"[Unexpected error in on_message]: {e}")

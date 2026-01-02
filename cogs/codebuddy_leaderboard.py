@@ -267,7 +267,7 @@ class CodeBuddyLeaderboardCog(commands.Cog):
                 else:
                     medal = f"{i+1:2d}."
                 
-                leaderboard_text += f"{medal} **{username}** - {current_streak} days 🔥"
+                leaderboard_text += f"{medal} **{username}** - {current_streak} questions 🔥"
                 if best_streak > current_streak:
                     leaderboard_text += f" (Best: {best_streak})"
                 leaderboard_text += "\n"
@@ -276,7 +276,7 @@ class CodeBuddyLeaderboardCog(commands.Cog):
             
             final_embed.add_field(
                 name="💡 How Streaks Work", 
-                value="• Solve at least one question correctly to maintain streak.\n• Giving a wrong answers resets your current streak\n• Your best streak is always remembered!", 
+                value="• Answer questions correctly in a row to build your streak\n• Giving a wrong answer resets your current streak\n• Your best streak is always remembered!", 
                 inline=False
             )
             final_embed.set_footer(text="Keep learning and answering questions to build an epic streak!")
@@ -367,7 +367,7 @@ class CodeBuddyLeaderboardCog(commands.Cog):
                 else:
                     medal = f"{i+1:2d}."
                 
-                leaderboard_text += f"{medal} **{username}** - {current_streak} days 🔥"
+                leaderboard_text += f"{medal} **{username}** - {current_streak} questions 🔥"
                 if best_streak > current_streak:
                     leaderboard_text += f" (Best: {best_streak})"
                 leaderboard_text += "\n"
@@ -376,7 +376,7 @@ class CodeBuddyLeaderboardCog(commands.Cog):
             
             final_embed.add_field(
                 name="💡 How Streaks Work", 
-                value="• Solve at least one question correctly to maintain streak.\n• Giving a wrong answers resets your current streak\n• Your best streak is always remembered!", 
+                value="• Answer questions correctly in a row to build your streak\n• Giving a wrong answer resets your current streak\n• Your best streak is always remembered!", 
                 inline=False
             )
             final_embed.set_footer(text="Keep learning and answering questions to build an epic streak!")
