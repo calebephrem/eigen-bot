@@ -56,33 +56,6 @@ class CommunityCommands(commands.Cog):
         embed.set_footer(text='CodeVerse Bot | Stay motivated')
         await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.hybrid_command(name='question', help='Get a random programming question')
-    async def question(self, ctx: commands.Context):
-        if not self.questions:
-            embed = discord.Embed(
-                title='No Questions Available',
-                description='Question database is currently empty.',
-                color=0xE74C3C
-            )
-            await ctx.reply(embed=embed, mention_author=False)
-            return
-        q = get_random_question(self.questions)
-        embed = discord.Embed(
-            title='Programming Question',
-            color=0x3498DB,
-            timestamp=datetime.now(tz=timezone.utc)
-        )
-        if isinstance(q, dict):
-            embed.add_field(name='Question', value=q.get('question', 'N/A'), inline=False)
-            if 'difficulty' in q:
-                embed.add_field(name='Difficulty', value=q['difficulty'], inline=True)
-            if 'category' in q:
-                embed.add_field(name='Category', value=q['category'], inline=True)
-        else:
-            embed.add_field(name='Question', value=str(q), inline=False)
-        embed.set_footer(text='CodeVerse Bot | Programming Practice')
-        await ctx.reply(embed=embed, mention_author=False)
-
     @commands.hybrid_command(name='meme', help='Get a random programming meme')
     async def meme(self, ctx: commands.Context):
         async with ctx.typing():

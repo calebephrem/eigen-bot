@@ -42,14 +42,12 @@ class DailyQuestsCog(commands.Cog):
             
             # Quest tasks
             quiz_status = "Done" if quizzes >= 5 else f"{quizzes}/5"
-            vote_status = "Done" if voted == 1 else "Pending"
             
             tasks = f"""
-            **1. Solve 5 Basic Quizzes** {quiz_status}
-            Answer <#1398986762352857129> quiz questions correctly
+            **Solve 5 Basic Quizzes** {quiz_status}
+            Answer <#1398986762352857129> quiz questions correctly to complete the quest!
             
-            **2. Vote for the Bot** {vote_status}
-            Vote on top.gg (coming soon!)
+            *Note: Top.gg voting will be added soon for bonus rewards!*
             """
             
             embed.add_field(name="Quest Tasks", value=tasks, inline=False)
@@ -216,14 +214,12 @@ class DailyQuestsCog(commands.Cog):
             
             # Quest tasks
             quiz_status = "Done" if quizzes >= 5 else f"{quizzes}/5"
-            vote_status = "Done" if voted == 1 else "Pending"
             
             tasks = f"""
-            **1. Solve 5 Basic Quizzes** {quiz_status}
-            *Answer CodeBuddy quiz questions correctly*
+            **Solve 5 Basic Quizzes** {quiz_status}
+            *Answer CodeBuddy quiz questions correctly to complete the quest!*
             
-            **2. Vote for the Bot** {vote_status}
-            *Vote on top.gg (coming soon!)*
+            *Note: Top.gg voting will be added soon for bonus rewards!*
             """
             
             embed.add_field(name="Quest Tasks", value=tasks, inline=False)

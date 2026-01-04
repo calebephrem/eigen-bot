@@ -357,8 +357,8 @@ async def increment_quest_quiz_count(user_id: int):
         
         new_count = quizzes + 1
         
-        # Check if quest is now complete
-        quest_complete = (new_count >= 5 and voted == 1 and completed == 0)
+        # Check if quest is now complete (only requires 5 quizzes)
+        quest_complete = (new_count >= 5 and completed == 0)
         
         if quest_complete:
             # Quest completed! Award rewards
