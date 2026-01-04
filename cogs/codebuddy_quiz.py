@@ -34,7 +34,7 @@ class CodeBuddyQuizCog(commands.Cog):
     async def cog_unload(self):
         self.post_question_loop.cancel()
 
-    @tasks.loop(minutes=20)
+    @tasks.loop(minutes=10)
     async def post_question_loop(self):
         try:
             if self.question_active and self.current_message:
