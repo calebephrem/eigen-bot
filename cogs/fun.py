@@ -125,25 +125,59 @@ class Fun(commands.Cog):
             color=0x3498DB,
             timestamp=datetime.now(timezone.utc)
         )
-        embed.set_footer(text="Answer will be revealed in 30 seconds")
+        embed.set_footer(text="You have 30 seconds to answer!")
         
         message = await ctx.reply(embed=embed, mention_author=False)
         
-        # Wait 30 seconds, then reveal answer
-        await asyncio.sleep(30)
-        
-        answer_embed = discord.Embed(
-            title="Trivia Answer",
-            description=f"**Question:** {question_data['question']}\n**Answer:** {question_data['answer']}",
-            color=0x2ECC71,
-            timestamp=datetime.now(timezone.utc)
-        )
-        answer_embed.set_footer(text="CodeVerse Bot | Programming Knowledge")
+        # Function to check if answer is correct
+        def check(m):
+            if m.author != ctx.author or m.channel != ctx.channel:
+                return False
+            
+            # Normalize both strings: lowercase, remove ALL spaces, punctuation, and special chars
+            import re
+            user_answer = re.sub(r'[^a-z0-9]', '', m.content.lower())
+            correct_answer = re.sub(r'[^a-z0-9]', '', question_data['answer'].lower())
+            
+            return user_answer == correct_answer
         
         try:
-            await message.edit(embed=answer_embed)
-        except:
-            await ctx.send(embed=answer_embed)
+            # Wait for correct answer or timeout
+            response = await self.bot.wait_for('message', timeout=30.0, check=check)
+            
+            # User answered correctly!
+            success_embed = discord.Embed(
+                title="Correct Answer!",
+                description=f"{ctx.author.mention} answered correctly!\n\n**Question:** {question_data['question']}\n**Answer:** {question_data['answer']}",
+                color=0x2ECC71,
+                timestamp=datetime.now(timezone.utc)
+            )
+            success_embed.set_footer(text="CodeVerse Bot | Programming Knowledge")
+            
+            try:
+                await response.add_reaction("✅")
+            except:
+                pass
+            
+            try:
+                await message.edit(embed=success_embed)
+            except:
+                await ctx.send(embed=success_embed)
+                
+        except asyncio.TimeoutError:
+            # Time's up, reveal answer
+            answer_embed = discord.Embed(
+                title="Time's Up!",
+                description=f"**Question:** {question_data['question']}\n**Answer:** {question_data['answer']}",
+                color=0xE74C3C,
+                timestamp=datetime.now(timezone.utc)
+            )
+            answer_embed.set_footer(text="CodeVerse Bot | Better luck next time!")
+            
+            try:
+                await message.edit(embed=answer_embed)
+            except:
+                await ctx.send(embed=answer_embed)
 
     @commands.hybrid_command(name="flip", help="Flip a coin")
     async def flip(self, ctx: commands.Context):

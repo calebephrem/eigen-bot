@@ -378,6 +378,15 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
+## Legal
+
+- **Terms of Service**: [View Terms](TERMS_OF_SERVICE.md)
+- **Privacy Policy**: [View Privacy Policy](PRIVACY_POLICY.md)
+
+By using Eigen Bot, you agree to our Terms of Service and Privacy Policy.
+
+---
+
 ## Support & Documentation
 
 ### **Getting Help**
