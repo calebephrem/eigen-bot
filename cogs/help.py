@@ -30,15 +30,15 @@ COG_DESCRIPTIONS = {
     "admin": "Administrator commands for managing the bot",
     "fun": "Entertainment commands including jokes, trivia, and games",
     "tags": "Create and manage custom text snippets for your server",
-    "communitycommands": "Engage your community with quotes, questions, and memes",
+    "communitycommands": "Engage your community with quotes and memes",
     "election": "Democratic voting system with weighted votes",
     "misc": "Support commands, bug reports, feedback, timestamps, and more",
     "starboardsystem": "Highlight the best messages with stars",
     "whoisalias": "User information and lookup commands",
     "utilityextra": "Extra utility commands like reminders, dice, and emotes",
-    "invitetracker": "Professional invite tracking system with analytics",
-    "afksystem": " Away From Keyboard system - Set AFK status with custom reasons, auto-respond to mentions, and track time away",
-    "tickets": " Support ticket system - Create and manage support tickets for your server",
+    "afksystem": "Away From Keyboard system - Set AFK status with custom reasons, auto-respond to mentions, and track time away",
+    "birthday": "Birthday tracking and celebration system",
+    "tickets": "Support ticket system - Create and manage support tickets for your server",
     "codebuddyleaderboardcog": "View coding leaderboards, weekly stats, and streaks",
     "codebuddyquizcog": "Test your coding knowledge with quizzes",
     "codebuddyflexcog": "Flex your coding stats and achievements",
@@ -66,8 +66,8 @@ class HelpSelect(discord.ui.Select):
         quiz_added = False
         quiz_command_count = 0
         
-        # Cogs to merge into Misc
-        merged_into_misc = ['birthday', 'bump', 'election', 'starboardsystem', 'tags']
+        # Cogs to merge into Misc - removed bump since it doesn't exist
+        merged_into_misc = ['birthday', 'election', 'starboardsystem', 'tags']
         
         # Add options for each loaded cog (use actual cog names from bot.cogs)
         for cog_name, cog in sorted(bot.cogs.items()):
@@ -148,7 +148,7 @@ class HelpSelect(discord.ui.Select):
         # Add category overview (use actual loaded cogs)
         categories = []
         quiz_count = 0
-        merged_into_misc = ['birthday', 'bump', 'election', 'starboardsystem', 'tags']
+        merged_into_misc = ['birthday', 'election', 'starboardsystem', 'tags']
         misc_count = 0
         
         for cog_name, cog in sorted(self.bot.cogs.items()):

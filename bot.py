@@ -92,15 +92,13 @@ class Fun2OoshBot(commands.Bot):
             'cogs.election',
             'cogs.whois_alias',
             'cogs.utility_extra',
-            'cogs.rules',
             'cogs.afk',
+            'cogs.birthday',
             'cogs.codebuddy_quiz',
             'cogs.codebuddy_flex',
             'cogs.codebuddy_leaderboard',
             'cogs.codebuddy_help',
             'cogs.daily_quests',
-            'cogs.bump',
-            'cogs.birthday',
         ]
 
         for ext in feature_cogs:

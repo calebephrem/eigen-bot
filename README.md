@@ -126,9 +126,8 @@ Entertainment and engagement features:
 ### **👥 Community Engagement**
 Build an active, engaged community:
 - **Random Quotes**: `?quote` - Inspirational programming quotes
-- **Random Questions**: `?question` - Programming discussion starters
-- **Memes**: `?meme` - Programming humor
-- **Suggestions**: Submit and discuss community ideas
+- **Memes**: `?meme` - Programming humor from Reddit
+- **Suggestions**: `?suggest <text>` - Submit feedback and ideas
 
 ### **🛠️ Utility Commands**
 Helpful tools for server management:
@@ -148,21 +147,18 @@ Connect with our support team:
 - All reports are sent directly to our support team for review
 
 ### **💤 AFK System**
-- Set AFK status with custom reasons
-- Auto-respond to mentions
-- Track time away
-- Automatic AFK removal when you send a message
+Let people know when you're away:
+- **Set AFK**: `?afk [reason]` - Set your AFK status with an optional reason
+- **Auto-respond**: Bot automatically notifies users when they mention you
+- **Time Tracking**: Shows how long you've been AFK
+- **Smart Removal**: Automatically removes AFK status when you send a message
 
 ### **🎂 Birthday System**
-- Set your birthday
-- Automatic birthday announcements
-- Birthday role assignment
-- Birthday leaderboard
-
-### **📈 Bump Reminder**
-- Remind users to bump the server on listing sites
-- Configurable bump intervals
-- Automatic reminders
+Celebrate community birthdays:
+- **Set Birthday**: `?setbirthday <DD/MM>` - Register your birthday
+- **Birthday List**: `?birthdays` - View upcoming birthdays
+- **Announcements**: Automatic birthday wishes on your special day
+- **Privacy**: Only stores day and month, not year
 
 ### **🔧 Admin & Moderation**
 Powerful tools for server administrators:

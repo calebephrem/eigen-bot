@@ -152,8 +152,30 @@ class StarboardSystem(commands.Cog):
                 
     async def get_starboard_settings(self, guild_id: int) -> Optional[Dict]:
         """Get starboard settings for a guild"""
+        # Check cache first
         if guild_id in self.star_cache:
             return self.star_cache[guild_id]
+        
+        # If not in cache, load from database
+        async with aiosqlite.connect(self.database_path) as db:
+            cursor = await db.execute(
+                "SELECT channel_id, threshold, star_emoji, enabled, self_star FROM starboard_settings WHERE guild_id = ?",
+                (guild_id,)
+            )
+            row = await cursor.fetchone()
+            
+            if row:
+                settings = {
+                    'channel_id': row[0],
+                    'threshold': row[1],
+                    'star_emoji': row[2],
+                    'enabled': bool(row[3]),
+                    'self_star': bool(row[4])
+                }
+                # Update cache
+                self.star_cache[guild_id] = settings
+                return settings
+        
         return None
         
     async def update_starboard_settings(self, guild_id: int, **kwargs):
