@@ -11,17 +11,37 @@ import asyncio
 class Counting(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        # Cache for counting channels: guild_id -> channel_id
+        self.counting_channels = {}
+
+    async def cog_load(self):
+        """Load counting channels into memory on startup"""
+        try:
+            async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
+                try:
+                    async with db.execute("SELECT guild_id, channel_id FROM counting_config") as cursor:
+                        rows = await cursor.fetchall()
+                        for guild_id, channel_id in rows:
+                            self.counting_channels[guild_id] = channel_id
+                    print(f"Loaded {len(self.counting_channels)} counting channels")
+                except aiosqlite.OperationalError:
+                    print("counting_config table not found during cog load (likely first run)")
+        except Exception as e:
+            print(f"Error loading counting channels: {e}")
 
     @app_commands.command(name="setcountingchannel", description="Set the channel for the counting game")
     @app_commands.checks.has_permissions(administrator=True)
     async def setcountingchannel(self, interaction: discord.Interaction, channel: discord.TextChannel):
-        async with aiosqlite.connect(DB_PATH) as db:
+        async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
             await db.execute("""
                 INSERT INTO counting_config (guild_id, channel_id)
                 VALUES (?, ?)
                 ON CONFLICT(guild_id) DO UPDATE SET channel_id = excluded.channel_id
             """, (interaction.guild_id, channel.id))
             await db.commit()
+        
+        # Update cache
+        self.counting_channels[interaction.guild_id] = channel.id
         
         await interaction.response.send_message(f"Counting channel set to {channel.mention}", ephemeral=True)
 
@@ -67,67 +87,89 @@ class Counting(commands.Cog):
         if message.author.bot or not message.guild:
             return
 
-        # Check if this is a counting channel
-        async with aiosqlite.connect(DB_PATH) as db:
-            async with db.execute("SELECT channel_id, current_count, last_user_id, high_score FROM counting_config WHERE guild_id = ?", (message.guild.id,)) as cursor:
-                config = await cursor.fetchone()
+        # 1. OPTIMIZATION: Check cache first before touching DB
+        if message.guild.id not in self.counting_channels:
+            return
+        
+        if message.channel.id != self.counting_channels[message.guild.id]:
+            return
+
+        # 2. Process the message logic
+        # Wrap DB operations in retry loop for robustness
+        retries = 3
+        while retries > 0:
+            try:
+                async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
+                    async with db.execute("SELECT current_count, last_user_id, high_score FROM counting_config WHERE guild_id = ?", (message.guild.id,)) as cursor:
+                        config = await cursor.fetchone()
+                    
+                    if not config:
+                        # Should not happen if in cache, but possible if DB was manually cleared
+                        return
+
+                    current_count, last_user_id, high_score = config
+
+                    # Try to parse the number
+                    content = message.content.strip()
+                    if not content:
+                        return
+
+                    # Evaluate math expression
+                    number = self.safe_eval(content)
+                    if number is None:
+                        return # Not a valid number/expression
+
+                    # Check if it's an integer
+                    if isinstance(number, float):
+                        if number.is_integer():
+                            number = int(number)
+                        else:
+                            # Not an int, ignore
+                            return
+
+                    # Check rules
+                    next_count = current_count + 1
+                    
+                    if number != next_count:
+                        await self.fail_count(message, current_count, "Wrong number!")
+                        return
+
+                    if message.author.id == last_user_id:
+                        await self.fail_count(message, current_count, "You can't count twice in a row!")
+                        return
+
+                    # Valid count - Update DB
+                    await message.add_reaction("✅")
+                    new_high_score = max(high_score, next_count)
+                    
+                    # Update configuration tables
+                    await db.execute("""
+                        UPDATE counting_config 
+                        SET current_count = ?, last_user_id = ?, high_score = ?
+                        WHERE guild_id = ?
+                    """, (next_count, message.author.id, new_high_score, message.guild.id))
+                    
+                    # Update user stats
+                    await db.execute("""
+                        INSERT INTO counting_stats (user_id, guild_id, total_counts, ruined_counts)
+                        VALUES (?, ?, 1, 0)
+                        ON CONFLICT(user_id, guild_id) DO UPDATE SET total_counts = total_counts + 1
+                    """, (message.author.id, message.guild.id))
+                    
+                    await db.commit()
+                    return # Success
             
-            if not config or message.channel.id != config[0]:
-                return
-
-            channel_id, current_count, last_user_id, high_score = config
-
-            # Try to parse the number
-            content = message.content.strip()
-            
-            if not content:
-                return
-
-            # Evaluate math expression
-            number = self.safe_eval(content)
-            
-            if number is None:
-                return # Not a valid number/expression
-
-            # Check if it's an integer result
-            if isinstance(number, float):
-                if number.is_integer():
-                    number = int(number)
+            except aiosqlite.OperationalError as e:
+                # If specifically locked, retry
+                if "locked" in str(e):
+                    retries -= 1
+                    if retries == 0:
+                        print(f"Database locked repeatedly in counting for msg {message.id}")
+                        # Don't crash bot, just ignore or log
+                        return
+                    await asyncio.sleep(0.1 * (4 - retries)) # backoff
                 else:
-                    # Result is not an integer (e.g. 2.5), so it can't be the next count
-                    # We treat this as a wrong number -> fail
-                    pass
-
-            # Check rules
-            next_count = current_count + 1
-            
-            if number != next_count:
-                await self.fail_count(message, current_count, "Wrong number!")
-                return
-
-            if message.author.id == last_user_id:
-                await self.fail_count(message, current_count, "You can't count twice in a row!")
-                return
-
-            # Valid count
-            await message.add_reaction("✅")
-            
-            new_high_score = max(high_score, next_count)
-            
-            await db.execute("""
-                UPDATE counting_config 
-                SET current_count = ?, last_user_id = ?, high_score = ?
-                WHERE guild_id = ?
-            """, (next_count, message.author.id, new_high_score, message.guild.id))
-            
-            # Update user stats
-            await db.execute("""
-                INSERT INTO counting_stats (user_id, guild_id, total_counts, ruined_counts)
-                VALUES (?, ?, 1, 0)
-                ON CONFLICT(user_id, guild_id) DO UPDATE SET total_counts = total_counts + 1
-            """, (message.author.id, message.guild.id))
-            
-            await db.commit()
+                    raise # Re-raise other operational errors
 
     async def fail_count(self, message, current_count, reason):
         # 1. Send initial message
@@ -174,26 +216,25 @@ class Counting(commands.Cog):
         new_count = 0
         new_last_user_id = None
         
+        dice_db_ops = [] # List of DB operations to perform (query, args)
+
         if not reactions_collected:
             # TIMEOUT / NOT ENOUGH REACTIONS -> RESET
             new_count = 0
             new_last_user_id = None
             outcome_msg = "⏳ **Time's up!** Not enough people helped roll the dice.\n💥 **Reset!** The count goes back to 0."
             
-            # DB Update for Reset
-            async with aiosqlite.connect(DB_PATH) as db:
-                await db.execute("""
-                    UPDATE counting_config 
-                    SET current_count = 0, last_user_id = NULL
-                    WHERE guild_id = ?
-                """, (message.guild.id,))
-                
-                await db.execute("""
-                    INSERT INTO counting_stats (user_id, guild_id, total_counts, ruined_counts)
-                    VALUES (?, ?, 0, 1)
-                    ON CONFLICT(user_id, guild_id) DO UPDATE SET ruined_counts = ruined_counts + 1
-                """, (message.author.id, message.guild.id))
-                await db.commit()
+            dice_db_ops.append(("""
+                UPDATE counting_config 
+                SET current_count = 0, last_user_id = NULL
+                WHERE guild_id = ?
+            """, (message.guild.id,)))
+
+            dice_db_ops.append(("""
+                INSERT INTO counting_stats (user_id, guild_id, total_counts, ruined_counts)
+                VALUES (?, ?, 0, 1)
+                ON CONFLICT(user_id, guild_id) DO UPDATE SET ruined_counts = ruined_counts + 1
+            """, (message.author.id, message.guild.id)))
 
         else:
             # REACTIONS COLLECTED -> ROLL DICE
@@ -204,6 +245,8 @@ class Counting(commands.Cog):
                 # SAVE
                 new_count = current_count
                 outcome_msg += "✨ **Saved!** The count continues!"
+                # No update to config needed except maybe verifying it? 
+                # Actually if saved, we do NOTHING to counting_config.
             elif dice_roll == 3:
                 # RESET
                 new_count = 0
@@ -220,29 +263,43 @@ class Counting(commands.Cog):
                 new_last_user_id = None
                 outcome_msg += "🔻 **-5 Penalty!** The count drops by 5."
 
-            # DB Update for Roll Outcome
-            async with aiosqlite.connect(DB_PATH) as db:
-                if dice_roll not in [2, 4, 6]:
-                    await db.execute("""
-                        UPDATE counting_config 
-                        SET current_count = ?, last_user_id = ?
-                        WHERE guild_id = ?
-                    """, (new_count, new_last_user_id, message.guild.id))
-                
-                await db.execute("""
-                    INSERT INTO counting_stats (user_id, guild_id, total_counts, ruined_counts)
-                    VALUES (?, ?, 0, 1)
-                    ON CONFLICT(user_id, guild_id) DO UPDATE SET ruined_counts = ruined_counts + 1
-                """, (message.author.id, message.guild.id))
-                
-                await db.commit()
-        
+            if dice_roll not in [2, 4, 6]:
+                dice_db_ops.append(("""
+                    UPDATE counting_config 
+                    SET current_count = ?, last_user_id = ?
+                    WHERE guild_id = ?
+                """, (new_count, new_last_user_id, message.guild.id)))
+            
+            dice_db_ops.append(("""
+                INSERT INTO counting_stats (user_id, guild_id, total_counts, ruined_counts)
+                VALUES (?, ?, 0, 1)
+                ON CONFLICT(user_id, guild_id) DO UPDATE SET ruined_counts = ruined_counts + 1
+            """, (message.author.id, message.guild.id)))
+
+        # EXECUTE DB OPS with Retry
+        if dice_db_ops:
+            retries = 3
+            while retries > 0:
+                try:
+                    async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
+                        for sql, args in dice_db_ops:
+                            await db.execute(sql, args)
+                        await db.commit()
+                    break # Success
+                except aiosqlite.OperationalError as e:
+                    if "locked" in str(e):
+                        retries -= 1
+                        await asyncio.sleep(0.5)
+                    else:
+                        print(f"Error saving count fail state: {e}")
+                        break
+
         # 4. Edit message
         await status_msg.edit(content=f"{reason} {message.author.mention} messed up at {current_count}!\n{outcome_msg}\nNext number is **{new_count + 1}**.")
 
     @commands.command(name="mcl", aliases=["tc"])
     async def most_count_leaderboard(self, ctx):
-        async with aiosqlite.connect(DB_PATH) as db:
+        async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
             async with db.execute("""
                 SELECT user_id, total_counts 
                 FROM counting_stats 
@@ -265,7 +322,7 @@ class Counting(commands.Cog):
 
     @commands.command(name="mrl")
     async def most_ruined_leaderboard(self, ctx):
-        async with aiosqlite.connect(DB_PATH) as db:
+        async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
             async with db.execute("""
                 SELECT user_id, ruined_counts 
                 FROM counting_stats 
@@ -288,7 +345,7 @@ class Counting(commands.Cog):
 
     @commands.command(name="scs")
     async def server_count_stats(self, ctx):
-        async with aiosqlite.connect(DB_PATH) as db:
+        async with aiosqlite.connect(DB_PATH, timeout=30.0) as db:
             async with db.execute("SELECT current_count, high_score FROM counting_config WHERE guild_id = ?", (ctx.guild.id,)) as cursor:
                 row = await cursor.fetchone()
         

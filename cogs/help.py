@@ -20,7 +20,6 @@ COG_EMOJIS = {
     "tickets": "",
     "codebuddyleaderboardcog": "",
     "codebuddyquizcog": "",
-    "codebuddyflexcog": "",
     "codebuddyhelpcog": "",
     "dailyquestscog": "📋",
 }
@@ -41,7 +40,6 @@ COG_DESCRIPTIONS = {
     "tickets": "Support ticket system - Create and manage support tickets for your server",
     "codebuddyleaderboardcog": "View coding leaderboards, weekly stats, and streaks",
     "codebuddyquizcog": "Test your coding knowledge with quizzes",
-    "codebuddyflexcog": "Flex your coding stats and achievements",
     "codebuddyhelpcog": "Help and information for CodeBuddy features",
     "dailyquestscog": "Complete daily challenges to earn rewards! Solve quizzes, vote, and earn streak freezes & bonus hints",
 }

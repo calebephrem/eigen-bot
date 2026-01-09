@@ -249,19 +249,6 @@ class HelpButtonView(discord.ui.View):
             inline=False
         )
         
-        embed.add_field(
-            name="/codeflex",
-            value=(
-                "**Generates a visual profile card with:**\n"
-                "• Your Discord avatar (hexagonal frame)\n"
-                "• Gradient text effects\n"
-                "• Points and streak information\n"
-                "• Professional design\n"
-                "• Perfect for sharing!"
-            ),
-            inline=False
-        )
-        
         await interaction.response.send_message(embed=embed, ephemeral=True)
     
     @discord.ui.button(label=" Game Rules", style=discord.ButtonStyle.success)

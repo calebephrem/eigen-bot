@@ -95,7 +95,6 @@ class Fun2OoshBot(commands.Bot):
             'cogs.afk',
             'cogs.birthday',
             'cogs.codebuddy_quiz',
-            'cogs.codebuddy_flex',
             'cogs.codebuddy_leaderboard',
             'cogs.codebuddy_help',
             'cogs.counting',

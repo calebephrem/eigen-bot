@@ -34,7 +34,7 @@ class CodeBuddyQuizCog(commands.Cog):
     async def cog_unload(self):
         self.post_question_loop.cancel()
 
-    @tasks.loop(minutes=10)
+    @tasks.loop(minutes=25)
     async def post_question_loop(self):
         try:
             if self.question_active and self.current_message:
@@ -71,7 +71,8 @@ class CodeBuddyQuizCog(commands.Cog):
                 color=discord.Color.blurple()
             )
             footer_text = "⚡ BONUS QUESTION – double points!" if self.bonus_active else "Answer with 'a', 'b', or 'c'."
-            embed.set_footer(text=footer_text)
+            lang_name = q.get("language", "General")
+            embed.set_footer(text=f"{lang_name} • {footer_text}")
 
             try:
                 self.current_message = await channel.send(embed=embed)

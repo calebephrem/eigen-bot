@@ -15,8 +15,6 @@
   - Compact messages with details in footers
 
 ### 🔄 Changed
-- **Misc Cog**: Updated to remove economy references
-  - Removed economy imports (SQLAlchemy, economy utils)
   - Updated about command to reflect current feature set
   - Added support server link to about embed
 - **Ticket Descriptions**: Improved category descriptions
@@ -24,21 +22,15 @@
   - Feature Requests: Focus on suggestions and improvements
 - **Config System**: Enhanced Pydantic configuration
   - Added `extra='ignore'` to handle legacy .env settings
-  - Prevents validation errors from old economy config
 
 ### 🐛 Fixed
 - Fixed Pydantic validation errors on bot startup
 - Fixed config.py to use Pydantic v2 ConfigDict properly
-- Resolved issues with old economy settings in .env files
 
 ---
 
 ## [2.0.0] - 2024-12-24
 
-### 🎯 Major Changes - Economy System Separation
-- **BREAKING**: Removed all economy and casino features from main bot
-- Moved economy system to separate bot in \`another-bot/\` folder
-- Removed SQLAlchemy dependency from main bot
 - Simplified bot architecture for community-focused features
 
 ### ✨ Added
@@ -52,25 +44,12 @@
 - **Database Module**: Created \`utils/database.py\` for centralized database configuration
 - **Admin Commands**: New general admin commands (reload, sync)
 
-### 🗑️ Removed (Moved to another-bot/)
-- **Economy Cog**: All economy commands (balance, work, daily, weekly, etc.)
-- **Casino Cog**: All casino games (blackjack, roulette, slots, etc.)
-- **Economy Models**: User, Wallet, Transaction, Bet models
-- **Economy Utils**: economy_utils.py, anti_fraud.py
-- **Economy Admin Commands**: add_money, reset_economy (moved to admin_economy.py)
-- **Economy Configuration**: Removed economy settings from main config
-
 ### 🔄 Changed
 - **Admin Cog**: Replaced with lightweight admin cog (reload, sync commands only)
-- **Help System**: Removed economy/casino references
 - **Bot Description**: Updated to focus on community engagement and support
 - **README.md**: Completely rewritten to reflect new bot focus
-- **Configuration**: Removed database_url and economy settings from main config
 
 ### 📝 Documentation
-- Created \`another-bot/README.md\` - Setup guide for economy bot
-- Created \`another-bot/MIGRATION_SUMMARY.md\` - Detailed migration documentation
-- Created \`another-bot/config.py\` - Standalone economy bot configuration
 - Updated main README with new feature set and ticket system documentation
 
 ### 🐛 Fixed
@@ -86,7 +65,6 @@ bot.Py
 /utils/codingquestions.py
 /cogs/afk.py
 /cogs/bump.py
-/cogs/codebuddy_flex.py
 /cogs/codebuddy_help.py
 /cogs/codebuddy_leaderboard.py
 /cogs/codebuddy_quiz.py

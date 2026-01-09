@@ -6,6 +6,9 @@ DB_PATH = "botdata.db"
 async def init_db():
     """Initialisiert die Datenbank und erstellt die Tabelle, falls sie nicht existiert."""
     async with aiosqlite.connect(DB_PATH) as db:
+        # Enable Write-Ahead Logging for better concurrency
+        await db.execute("PRAGMA journal_mode=WAL")
+        
         await db.execute("""
             CREATE TABLE IF NOT EXISTS leaderboard (
                 user_id INTEGER PRIMARY KEY,
@@ -119,7 +122,7 @@ async def init_db():
         # Check if TOD table is empty, if so populate it
         async with db.execute("SELECT COUNT(*) FROM tod_questions") as cursor:
             count = await cursor.fetchone()
-            if count[0] == 0:
+            if count and count[0] == 0:
                 await populate_tod_questions(db)
         
         await db.commit()
