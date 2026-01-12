@@ -46,11 +46,11 @@ class Base64Message(commands.Cog):
         self.bot = bot
         self.reply_command = app_commands.ContextMenu(
             name="Decode Cipher",
-            callback=self.reply_pong,
+            callback=self.reply_decode_cipher,
         )
         bot.tree.add_command(self.reply_command)
 
-    async def reply_pong(
+    async def reply_decode_cipher(
         self,
         interaction: discord.Interaction,
         message: discord.Message
