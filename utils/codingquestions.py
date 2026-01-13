@@ -612,6 +612,34 @@ HARD_QUESTIONS = [
     }
 ]
 
+_question_pool = HARD_QUESTIONS.copy()
+random.shuffle(_question_pool)
+_index = 0
+
+
 def get_random_question():
     """Returns a random question from the list."""
-    return random.choice(HARD_QUESTIONS)
+    global _index, _question_pool
+    # This code ensures that the code goes through the entire question pool and does not repeat questions.
+    if _index >= len(_question_pool):
+        random.shuffle(_question_pool)
+        _index = 0
+
+    q = _question_pool[_index]
+    _index += 1
+    return fix_question(q)
+
+def fix_question(question):
+    """Fixes questions to ensure randomization of choices."""
+    # Extract answer text.
+    correct_letter = question["correct"]
+    correct_idx = ord(correct_letter) - ord('a')
+
+    # Strip prefixes and shuffle.
+    question["options"] = [opt[2:] for opt in question["options"]]
+    correct_text = question["options"][correct_idx]
+    random.shuffle(question["options"])
+
+    # Update correct letter to new position.
+    question["correct"] = chr(question["options"].index(correct_text) + ord('a'))
+    return question

@@ -64,7 +64,9 @@ class CodeBuddyQuizCog(commands.Cog):
                 print(f"[Error fetching question]: {e}")
                 return
 
-            options_text = "\n".join(q.get("options", []))
+            options_letters = ["a", "b", "c"]
+            options_text = [f"{options_letters[idx]}) {q[idx]}" for idx in range(0, len(options_letters) - 1)]
+            options_text = "\n".join(options_text)
             embed = discord.Embed(
                 title="❓ Coding Quiz",
                 description=f"**{self.current_question}**\n\n{options_text}",
