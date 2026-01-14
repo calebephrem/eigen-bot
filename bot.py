@@ -98,9 +98,6 @@ class Fun2OoshBot(commands.Bot):
             'cogs.codebuddy_help',
             'cogs.counting',
             'cogs.tod',
-            'cogs.cipher_message'
-
-
             'cogs.daily_quests',
         ]
 
