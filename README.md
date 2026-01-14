@@ -25,13 +25,13 @@ Eigen Bot supports **hybrid commands** - both prefix and slash commands:
   - Auto-complete and built-in Discord UI
   - Limited to essential commands to stay within Discord's 100 command limit
 
-**💡 Tip**: Use `?helpmenu` or `/help` to explore all available commands!
+** Tip**: Use `?helpmenu` or `/help` to explore all available commands!
 
 ---
 
 ## Core Features
 
-### **🎫 Ticket System**
+### ** Ticket System**
 Professional support ticket management using Discord threads:
 
 **Features:**
@@ -54,7 +54,7 @@ Professional support ticket management using Discord threads:
 - `/ticketstats` - View ticket system statistics
 - `/forceclose` - Force close a ticket (admin)
 
-### **⭐ Starboard System**
+### ** Starboard System**
 Highlight the best messages in your community:
 - **Automatic Highlighting**: Messages that reach a star threshold appear in starboard
 - **Customizable**: Set custom star emoji, adjustable threshold, self-starring toggle
@@ -63,7 +63,7 @@ Highlight the best messages in your community:
 - **Smart Handling**: Tracks who starred what, prevents duplicates, handles uncached messages
 - **Admin Tools**: `?starboard_cleanup` to remove invalid entries
 
-### **🏷️ Tag System**
+### ** Tag System**
 Create and share custom text snippets:
 - **Create Tags**: `?tags create <name> <content>` - Store reusable text
 - **Retrieve Tags**: `?tag <name>` - Quickly fetch stored content
@@ -72,7 +72,7 @@ Create and share custom text snippets:
 - **List Tags**: `?tags list` - View all server tags
 - **Usage Tracking**: Tracks how many times each tag is used
 
-### **🗳️ Election/Voting System**
+### ** Election/Voting System**
 Democratic decision-making for your community:
 - **Create Elections**: `?election create <title> <candidates> [duration]`
 - **Weighted Voting**: Vote strength based on user roles/tenure
@@ -81,14 +81,14 @@ Democratic decision-making for your community:
 - **Interactive Voting**: Button-based voting interface
 - **Timed Elections**: Auto-close after specified duration
 
-### **💻 CodeBuddy System**
+### ** CodeBuddy System**
 Engage your community with coding challenges and leaderboards:
 - **Coding Quizzes**: Test your knowledge with automated coding questions
 - **Leaderboards**: Weekly, all-time, and streak tracking
 - **Stats & Flex**: Personal statistics and shareable stat cards
 - **Engagement**: Earn points for correct answers and climb the ranks
 
-### **📋 Daily Quest System**
+### ** Daily Quest System**
 Complete daily challenges to earn powerful rewards! Inspired by popular quest systems:
 
 **Features:**
@@ -97,8 +97,8 @@ Complete daily challenges to earn powerful rewards! Inspired by popular quest sy
   - Solve 5 Basic CodeBuddy Quizzes
   - Vote for the Bot on top.gg (coming soon!)
 - **Rewards**:
-  - 🧊 **Streak Freezes**: Automatically protect your quiz streak when you answer wrong
-  - 💡 **Bonus Hints**: Use hints to eliminate wrong answers (ephemeral messages)
+  - **Streak Freezes**: Automatically protect your quiz streak when you answer wrong
+  - **Bonus Hints**: Use hints to eliminate wrong answers (ephemeral messages)
 - **Progress Tracking**: Monitor your daily quest completion in real-time
 
 **Commands:**
@@ -113,7 +113,7 @@ Complete daily challenges to earn powerful rewards! Inspired by popular quest sy
 3. Earn 1 Streak Freeze + 1 Bonus Hint
 4. Use rewards strategically to maintain your streak and climb leaderboards!
 
-### **🎭 Fun Commands**
+### ** Fun Commands**
 Entertainment and engagement features:
 - **Programming Jokes**: `?joke` - Get a clean programming-related joke
 - **Compliments**: `?compliment [@user]` - Give professional programming compliments
@@ -123,13 +123,13 @@ Entertainment and engagement features:
 - **Coin Flip**: `?coinflip` - Heads or tails
 - **Dice Roll**: `?roll [size] [count]` - Roll dice
 
-### **👥 Community Engagement**
+### ** Community Engagement**
 Build an active, engaged community:
 - **Random Quotes**: `?quote` - Inspirational programming quotes
 - **Memes**: `?meme` - Programming humor from Reddit
 - **Suggestions**: `?suggest <text>` - Submit feedback and ideas
 
-### **🛠️ Utility Commands**
+### ** Utility Commands**
 Helpful tools for server management:
 - **Emote List**: `?emotes [search]` - Browse server emojis
 - **Member Count**: `?membercount` - View current server member count
@@ -137,7 +137,7 @@ Helpful tools for server management:
 - **Reminders**: `?remindme <time> <message>` - Set personal reminders
 - **Timestamps**: `/timestamp` - Generate Discord timestamps with timezone support
 
-### **💬 Support & Feedback**
+### ** Support & Feedback**
 Connect with our support team:
 - **Bug Reports**: `?bug` or `/bug` - Report bugs directly to our support server
 - **Feature Requests**: `/newfeature` - Suggest new features or improvements
@@ -145,21 +145,21 @@ Connect with our support team:
 - **Support Server**: `?support` or `/support` - Get the support server invite link
 - All reports are sent directly to our support team for review
 
-### **💤 AFK System**
+### ** AFK System**
 Let people know when you're away:
 - **Set AFK**: `?afk [reason]` - Set your AFK status with an optional reason
 - **Auto-respond**: Bot automatically notifies users when they mention you
 - **Time Tracking**: Shows how long you've been AFK
 - **Smart Removal**: Automatically removes AFK status when you send a message
 
-### **🎂 Birthday System**
+### ** Birthday System**
 Celebrate community birthdays:
 - **Set Birthday**: `?setbirthday <DD/MM>` - Register your birthday
 - **Birthday List**: `?birthdays` - View upcoming birthdays
 - **Announcements**: Automatic birthday wishes on your special day
 - **Privacy**: Only stores day and month, not year
 
-### **🔧 Admin & Moderation**
+### ** Admin & Moderation**
 Powerful tools for server administrators:
 - **Bot Management**: `?reload <cog>` - Reload cogs on the fly
 - **Command Sync**: `?sync` - Sync slash commands
@@ -407,6 +407,6 @@ Special thanks to the discord.py community and all contributors!
 
 [GitHub](https://github.com/youngcoder45/Eigen-bot-In-Python) • [Issues](https://github.com/youngcoder45/Eigen-bot-In-Python/issues)
 
-Made with ❤️ for Discord communities
+Made with for Discord communities
 
 </div>
