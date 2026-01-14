@@ -135,7 +135,6 @@ Helpful tools for server management:
 - **Member Count**: `?membercount` - View current server member count
 - **Random Color**: `?randomcolor` - Generate random hex colors
 - **Reminders**: `?remindme <time> <message>` - Set personal reminders
-- **User Info**: `?whois [@user]` - Detailed user information
 - **Timestamps**: `/timestamp` - Generate Discord timestamps with timezone support
 
 ### **💬 Support & Feedback**

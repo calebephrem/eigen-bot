@@ -88,7 +88,6 @@ class Fun2OoshBot(commands.Bot):
             'cogs.starboard',
             'cogs.help',
             'cogs.community',
-            'cogs.whois_alias',
             'cogs.utility_extra',
             'cogs.afk',
             'cogs.birthday',
