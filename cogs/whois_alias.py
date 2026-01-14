@@ -7,7 +7,7 @@ class WhoisAlias(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="whois", help="Alias for /userinfo")
+    @commands.command(name="whois", help="Alias for ?userinfo")
     async def whois(self, ctx: commands.Context, user: Optional[discord.Member] = None):
         target = user or ctx.author
         # Try delegating to existing command if present

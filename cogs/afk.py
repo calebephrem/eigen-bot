@@ -186,12 +186,11 @@ class AFKSystem(commands.Cog):
         
         await ctx.send(embed=embed)
 
-    @commands.hybrid_command(
+    @commands.command(
         name="unafk",
         help="Remove your AFK status manually",
         aliases=["back", "return"]
     )
-    @app_commands.describe()
     @commands.guild_only()
     async def remove_afk_command(self, ctx: commands.Context):
         """Manually remove AFK status"""
@@ -303,7 +302,7 @@ class AFKSystem(commands.Cog):
         embed.timestamp = datetime.now(timezone.utc)
         await ctx.send(embed=embed)
 
-    @commands.hybrid_command(name="afkignore", help="Toggle ignoring AFK mentions in this channel")
+    @commands.command(name="afkignore", help="Toggle ignoring AFK mentions in this channel")
     @commands.has_permissions(manage_channels=True)
     @commands.guild_only()
     async def afk_ignore(self, ctx: commands.Context):
@@ -332,7 +331,7 @@ class AFKSystem(commands.Cog):
             self.ignored_channels_cache.add(channel_id)
             await ctx.send(f"🚫 AFK mentions are now **disabled** in {channel.mention}")
 
-    @commands.hybrid_command(name="afkignored", help="List channels where AFK mentions are ignored")
+    @commands.command(name="afkignored", help="List channels where AFK mentions are ignored")
     @commands.guild_only()
     async def afk_ignored(self, ctx: commands.Context):
         """List channels where AFK mentions are ignored"""
@@ -352,7 +351,7 @@ class AFKSystem(commands.Cog):
         else:
             await ctx.send(f"AFK mentions are ignored in: {', '.join(ignored_channels)}")
 
-    @commands.hybrid_command(name="afkreset", help="Reset AFK status for a user (Admin only)")
+    @commands.command(name="afkreset", help="Reset AFK status for a user (Admin only)")
     @commands.has_permissions(manage_messages=True)
     @commands.guild_only()
     async def afk_reset(self, ctx: commands.Context, member: discord.Member):
@@ -366,7 +365,7 @@ class AFKSystem(commands.Cog):
         await self.remove_afk(member.id)
         await ctx.send(f"✅ Reset AFK status for {member.display_name}")
 
-    @commands.hybrid_command(name="afkclear", help="Clear AFK status for a user (Admin only)")
+    @commands.command(name="afkclear", help="Clear AFK status for a user (Admin only)")
     @commands.has_permissions(manage_messages=True)
     @commands.guild_only()
     async def afk_clear(self, ctx: commands.Context, member: discord.Member):

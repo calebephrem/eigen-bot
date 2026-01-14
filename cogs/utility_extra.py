@@ -58,7 +58,7 @@ class UtilityExtra(commands.Cog):
         display = " ".join(str(e) for e in emojis[:100])  # limit to avoid overflow
         await ctx.reply(f"Emojis ({len(emojis)}):\n{display}")
 
-    @commands.hybrid_command(name="membercount", help="Get the member count of the current server.")
+    @commands.command(name="membercount", help="Get the member count of the current server.")
     @commands.guild_only()
     async def membercount(self, ctx: commands.Context):
         if ctx.guild is None:
@@ -73,8 +73,7 @@ class UtilityExtra(commands.Cog):
         embed.set_thumbnail(url=f"https://singlecolorimage.com/get/{hex_code[1:]}/400x100")
         await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name="roll", help="Roll dice. Usage: /roll size count")
-    @app_commands.describe(size="Number of faces per die (e.g., 6)", count="Number of dice (1-20)")
+    @commands.command(name="roll", help="Roll dice. Usage: ?roll [size] [count]")
     async def roll(self, ctx: commands.Context, size: int = 6, count: int = 1):
         if size < 2 or size > 1000:
             return await ctx.reply("Size must be between 2 and 1000.")
@@ -116,8 +115,7 @@ class UtilityExtra(commands.Cog):
     async def before_reminder_checker(self):
         await self.bot.wait_until_ready()
 
-    @commands.hybrid_command(name="inviteinfo", help="Get information about a Discord invite.")
-    @app_commands.describe(code="Invite code or full URL")
+    @commands.command(name="inviteinfo", help="Get information about a Discord invite.")
     async def inviteinfo(self, ctx: commands.Context, code: str):
         # Extract code if full URL
         if "discord.gg/3xKFvKhuGR" in code:
@@ -181,8 +179,7 @@ class UtilityExtra(commands.Cog):
         embed.set_thumbnail(url=f"https://singlecolorimage.com/get/{hex_code}/400x100")
         await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name="distance", help="Get the distance between two sets of coordinates (x1,y1 x2,y2).")
-    @app_commands.describe(coords1="First coordinates (x1,y1)", coords2="Second coordinates (x2,y2)")
+    @commands.command(name="distance", help="Get the distance between two sets of coordinates (x1,y1 x2,y2).")
     async def distance(self, ctx: commands.Context, coords1: str, coords2: str):
         try:
             x1, y1 = map(float, coords1.split(','))

@@ -56,7 +56,7 @@ class CommunityCommands(commands.Cog):
         embed.set_footer(text='CodeVerse Bot | Stay motivated')
         await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.hybrid_command(name='meme', help='Get a random programming meme')
+    @commands.command(name='meme', help='Get a random programming meme')
     async def meme(self, ctx: commands.Context):
         async with ctx.typing():
             meme = await fetch_programming_meme()

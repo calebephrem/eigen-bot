@@ -28,6 +28,7 @@ class Admin(commands.Cog):
         return False
 
     @commands.command(name='reload')
+    @commands.has_permissions(administrator=True)
     async def reload_cog(self, ctx: commands.Context, cog_name: str):
         """Reload a cog (admin only)."""
         try:
@@ -46,6 +47,7 @@ class Admin(commands.Cog):
 
     @app_commands.command(name='reload', description='Reload a cog (admin only)')
     @app_commands.describe(cog_name='Name of the cog to reload')
+    @app_commands.default_permissions(administrator=True)
     async def reload_cog_slash(self, interaction: discord.Interaction, cog_name: str):
         """Slash command for reloading cogs."""
         is_owner = self.config.owner_id and interaction.user.id == self.config.owner_id
@@ -77,6 +79,7 @@ class Admin(commands.Cog):
             await interaction.response.send_message(embed=embed)
 
     @commands.command(name='sync')
+    @commands.has_permissions(administrator=True)
     async def sync_commands(self, ctx: commands.Context):
         """Sync slash commands (admin only)."""
         try:
@@ -105,6 +108,7 @@ class Admin(commands.Cog):
             await ctx.send(embed=embed)
 
     @app_commands.command(name='sync', description='Sync slash commands (admin only)')
+    @app_commands.default_permissions(administrator=True)
     async def sync_commands_slash(self, interaction: discord.Interaction):
         """Slash command for syncing commands."""
         is_owner = self.config.owner_id and interaction.user.id == self.config.owner_id
