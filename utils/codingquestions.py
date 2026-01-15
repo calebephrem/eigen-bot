@@ -1,4 +1,5 @@
 import random
+import copy
 
 HARD_QUESTIONS = [
     # --- PYTHON ---
@@ -624,7 +625,7 @@ def get_random_question():
         random.shuffle(_question_pool)
         _index = 0
 
-    q = _question_pool[_index]
+    q = copy.deepcopy(_question_pool[_index])
     _index += 1
     return fix_question(q)
 
