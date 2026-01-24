@@ -189,7 +189,7 @@ class UtilityExtra(commands.Cog):
         except ValueError:
             await ctx.reply("Invalid format. Use `x,y` for coordinates. Example: `?distance 0,0 3,4`")
             
-@commands.command(name='grep', aliases=['search', 'find'], help='Search for a pattern in the last N messages. Usage: ?grep [-i] <pattern> [limit]')
+    @commands.command(name='grep', aliases=['search', 'find'], help='Search for a pattern in the last N messages. Usage: ?grep [-i] <pattern> [limit]')
     @commands.guild_only()
     async def grep(self, ctx: commands.Context, *args):
         # use: ?grep [-i] <pattern> [limit]
@@ -260,3 +260,4 @@ class UtilityExtra(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(UtilityExtra(bot))
+
