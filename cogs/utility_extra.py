@@ -234,7 +234,7 @@ class UtilityExtra(commands.Cog):
                 continue
 
             if regex.search(msg.content):
-                matches.append(msg)
+                matches.append((msg.author.display_name, msg.content, msg.jump_url))
 
         if not matches:
             return await ctx.reply(f"No matches found for `{pattern}` in the recently checked messages.")
@@ -259,4 +259,5 @@ class UtilityExtra(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(UtilityExtra(bot))
+
 
