@@ -189,7 +189,7 @@ class UtilityExtra(commands.Cog):
         except ValueError:
             await ctx.reply("Invalid format. Use `x,y` for coordinates. Example: `?distance 0,0 3,4`")
             
-    @commands.command(name='grep', aliases=['search', 'find'], help='Search for a pattern in the last N messages. Usage: ?grep [-i] <pattern> [limit]')
+@commands.command(name='grep', aliases=['search', 'find'], help='Search for a pattern in the last N messages. Usage: ?grep [-i] <pattern> [limit]')
     @commands.guild_only()
     async def grep(self, ctx: commands.Context, *args):
         # use: ?grep [-i] <pattern> [limit]
@@ -197,7 +197,6 @@ class UtilityExtra(commands.Cog):
             return await ctx.reply("This command can only be used in a server.")
 
         insensitive = False
-        limit = 50
         clean_args = []
 
         for arg in args:
@@ -210,6 +209,7 @@ class UtilityExtra(commands.Cog):
             return await ctx.reply("Please provide a pattern to search for.")
 
         pattern = clean_args[0]
+        limit = 50
         
         if len(clean_args) > 1:
             try:
@@ -240,12 +240,13 @@ class UtilityExtra(commands.Cog):
             return await ctx.reply(f"No matches found for `{pattern}` in the recently checked messages.")
 
         results = []
-        for msg in matches:
-            content = msg.content.replace('\n', ' ')
-            if len(content) > 50:
-                content = content[:50] + '...'
+        # fix: d7a4ff1
+        for author_name, content, jump_url in matches:
+            clean_content = content.replace('\n', ' ')
+            if len(clean_content) > 50:
+                clean_content = clean_content[:50] + '...'
                 
-            line = f"[{msg.author.display_name}]: {content} ([Jump]({msg.jump_url}))"
+            line = f"[{author_name}]: {clean_content} ([Jump]({jump_url}))"
             results.append(line)
 
         header = f"Found {len(matches)} matches for `{pattern}`:\n"
@@ -259,5 +260,3 @@ class UtilityExtra(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(UtilityExtra(bot))
-
-
