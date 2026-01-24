@@ -188,6 +188,75 @@ class UtilityExtra(commands.Cog):
             await ctx.reply(f"Distance between ({x1},{y1}) and ({x2},{y2}) is **{dist:.2f}**")
         except ValueError:
             await ctx.reply("Invalid format. Use `x,y` for coordinates. Example: `?distance 0,0 3,4`")
+            
+    @commands.command(name='grep', aliases=['search', 'find'], help='Search for a pattern in the last N messages. Usage: ?grep [-i] <pattern> [limit]')
+    @commands.guild_only()
+    async def grep(self, ctx: commands.Context, *args):
+        # use: ?grep [-i] <pattern> [limit]
+        if not ctx.guild:
+            return await ctx.reply("This command can only be used in a server.")
+
+        insensitive = False
+        limit = 50
+        clean_args = []
+
+        for arg in args:
+            if arg == '-i':
+                insensitive = True
+            else:
+                clean_args.append(arg)
+
+        if not clean_args:
+            return await ctx.reply("Please provide a pattern to search for.")
+
+        pattern = clean_args[0]
+        
+        if len(clean_args) > 1:
+            try:
+                parsed_limit = int(clean_args[1])
+                limit = max(1, min(parsed_limit, 100))
+            except ValueError:
+                pass
+
+        flags = re.IGNORECASE if insensitive else 0
+        try:
+            regex = re.compile(pattern, flags)
+        except re.error:
+            regex = re.compile(re.escape(pattern), flags)
+
+        matches = []
+        async for msg in ctx.channel.history(limit=limit + 10):
+            if len(matches) >= limit: 
+                break
+            if msg.id == ctx.message.id:
+                continue
+            if msg.author.bot and 'grep result' in msg.content:
+                continue
+
+            if regex.search(msg.content):
+                matches.append(msg)
+
+        if not matches:
+            return await ctx.reply(f"No matches found for `{pattern}` in the recently checked messages.")
+
+        results = []
+        for msg in matches:
+            content = msg.content.replace('\n', ' ')
+            if len(content) > 50:
+                content = content[:50] + '...'
+                
+            line = f"[{msg.author.display_name}]: {content} ([Jump]({msg.jump_url}))"
+            results.append(line)
+
+        header = f"Found {len(matches)} matches for `{pattern}`:\n"
+        output_body = "\n".join(results)
+
+        if len(output_body) > 1900:
+            output_body = output_body[:1900] + '\n...(truncated)'
+
+        final_output = header + output_body
+        await ctx.reply(final_output)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(UtilityExtra(bot))
+
