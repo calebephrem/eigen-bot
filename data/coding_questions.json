@@ -1,604 +1,792 @@
 [
-    {
-        "language": "Python",
-        "question": "What is the output of this code?\n```python\nprint(type(lambda: None))\n```",
-        "options": ["<class 'function'>", "<class 'lambda'>", "<class 'NoneType'>"],
-        "correct": "a",
-        "explanation": "Lambdas are functions in Python."
-    },
-    {
-        "language": "Python",
-        "question": "Which of these is NOT a valid way to create a set?",
-        "options": ["{1, 2}", "set([1, 2])", "{}"],
-        "correct": "c",
-        "explanation": "`{}` creates an empty dictionary, not a set. Use `set()` for an empty set."
-    },
-    {
-        "language": "Python",
-        "question": "What is the output?\n```python\na = [1, 2, 3]\nb = a\na += [4]\nprint(b)\n```",
-        "options": ["[1, 2, 3]", "[1, 2, 3, 4]", "Error"],
-        "correct": "b",
-        "explanation": "`+=` on lists modifies the list in-place, so `b` (which references the same object) sees the change."
-    },
-    {
-        "language": "Python",
-        "question": "What does the `__init__` method do?",
-        "options": ["Initializes a class", "Initializes an object (instance)", "Creates a new module"],
-        "correct": "b"
-    },
-    {
-        "language": "Python",
-        "question": "What is the result of `print(0.1 + 0.2 == 0.3)`?",
-        "options": ["True", "False", "Error"],
-        "correct": "b",
-        "explanation": "Floating point precision issues make 0.1 + 0.2 slightly larger than 0.3."
-    },
-    {
-        "language": "Python",
-        "question": "Which decorator is used to define a class method?",
-        "options": ["@static", "@classmethod", "@method"],
-        "correct": "b"
-    },
-    {
-        "language": "Python",
-        "question": "What is the output of `print('a' < 'b')`?",
-        "options": ["True", "False", "Error"],
-        "correct": "a",
-        "explanation": "Strings are compared lexicographically (ASCII value)."
-    },
-    {
-        "language": "Python",
-        "question": "What keyword is used to handle exceptions?",
-        "options": ["catch", "except", "handle"],
-        "correct": "b"
-    },
-    {
-        "language": "Python",
-        "question": "What is a generator in Python?",
-        "options": ["A function that returns a list", "A function that yields values one by one", "A tool to generate code"],
-        "correct": "b"
-    },
-    {
-        "language": "Python",
-        "question": "What is the output?\n```python\nx = (1)\nprint(type(x))\n```",
-        "options": ["<class 'tuple'>", "<class 'int'>", "<class 'list'>"],
-        "correct": "b",
-        "explanation": "A single element tuple requires a comma: `(1,)`."
-    },
-    {
-        "language": "JavaScript",
-        "question": "What is the output of `console.log(typeof NaN)`?",
-        "options": ["'number'", "'NaN'", "'undefined'"],
-        "correct": "a",
-        "explanation": "NaN stands for Not-a-Number, but its type is technically 'number'."
-    },
-    {
-        "language": "JavaScript",
-        "question": "What is the result of `[] + []`?",
-        "options": ["[]", "'' (Empty String)", "0"],
-        "correct": "b",
-        "explanation": "Arrays are converted to strings and concatenated."
-    },
-    {
-        "language": "JavaScript",
-        "question": "Which keyword declares a block-scoped variable?",
-        "options": ["var", "let", "def"],
-        "correct": "b"
-    },
-    {
-        "language": "JavaScript",
-        "question": "What is the output of `console.log(0.1 + 0.2 === 0.3)`?",
-        "options": ["true", "false", "undefined"],
-        "correct": "b",
-        "explanation": "Floating point arithmetic."
-    },
-    {
-        "language": "JavaScript",
-        "question": "How do you create a Promise?",
-        "options": ["new Promise((resolve, reject) => ...)", "Promise.create()", "async function()"],
-        "correct": "a"
-    },
-    {
-        "language": "JavaScript",
-        "question": "What does `===` check?",
-        "options": ["Value only", "Value and Type", "Reference"],
-        "correct": "b"
-    },
-    {
-        "language": "JavaScript",
-        "question": "What is the output?\n```javascript\nconsole.log('5' - 3)\n```",
-        "options": ["2", "'53'", "NaN"],
-        "correct": "a",
-        "explanation": "The `-` operator converts the string to a number."
-    },
-    {
-        "language": "JavaScript",
-        "question": "What is a closure?",
-        "options": ["A function bundled with its lexical environment", "The end of a function", "A closed class"],
-        "correct": "a"
-    },
-    {
-        "language": "JavaScript",
-        "question": "Which method removes the last element from an array?",
-        "options": ["shift()", "pop()", "remove()"],
-        "correct": "b"
-    },
-    {
-        "language": "JavaScript",
-        "question": "What is the output?\n```javascript\nconsole.log(1 + '1')\n```",
-        "options": ["2", "'11'", "NaN"],
-        "correct": "b",
-        "explanation": "The `+` operator with a string performs concatenation."
-    },
-    {
-        "language": "Java",
-        "question": "What is the size of an `int` in Java?",
-        "options": ["16 bit", "32 bit", "64 bit"],
-        "correct": "b"
-    },
-    {
-        "language": "Java",
-        "question": "Which keyword is used to inherit a class?",
-        "options": ["implements", "extends", "inherits"],
-        "correct": "b"
-    },
-    {
-        "language": "Java",
-        "question": "What is the default value of a boolean variable?",
-        "options": ["true", "false", "null"],
-        "correct": "b"
-    },
-    {
-        "language": "Java",
-        "question": "Which collection allows duplicate elements?",
-        "options": ["Set", "List", "Map (Keys)"],
-        "correct": "b"
-    },
-    {
-        "language": "Java",
-        "question": "What is the entry point of a Java program?",
-        "options": ["public static void main(String[] args)", "void main()", "public void start()"],
-        "correct": "a"
-    },
-    {
-        "language": "Java",
-        "question": "Is Java pass-by-reference or pass-by-value?",
-        "options": ["Pass-by-reference", "Pass-by-value", "Both"],
-        "correct": "b",
-        "explanation": "Java is strictly pass-by-value. Object references are passed by value."
-    },
-    {
-        "language": "Java",
-        "question": "Which keyword makes a variable constant?",
-        "options": ["const", "final", "static"],
-        "correct": "b"
-    },
-    {
-        "language": "Java",
-        "question": "What is the parent class of all classes in Java?",
-        "options": ["Class", "Object", "Main"],
-        "correct": "b"
-    },
-    {
-        "language": "Java",
-        "question": "How do you compare two strings for equality?",
-        "options": ["==", ".equals()", ".compare()"],
-        "correct": "b",
-        "explanation": "`==` compares references, `.equals()` compares content."
-    },
-    {
-        "language": "Java",
-        "question": "What is an interface?",
-        "options": ["A class with only abstract methods (mostly)", "A concrete class", "A variable type"],
-        "correct": "a"
-    },
-    {
-        "language": "C++",
-        "question": "What is the output?\n```cpp\nint x = 5;\ncout << x++ << ++x;\n```",
-        "options": ["57", "66", "Undefined Behavior"],
-        "correct": "c",
-        "explanation": "The order of evaluation of operands in `<<` is unspecified/undefined in older standards (before C++17)."
-    },
-    {
-        "language": "C++",
-        "question": "Which operator is used to access members of a pointer?",
-        "options": [".", "->", "::"],
-        "correct": "b"
-    },
-    {
-        "language": "C++",
-        "question": "What is a destructor?",
-        "options": ["A method to delete a class", "A method called when an object is destroyed", "A method to free memory manually"],
-        "correct": "b"
-    },
-    {
-        "language": "C++",
-        "question": "What is the difference between `struct` and `class`?",
-        "options": ["No difference", "Default access specifier", "Structs cannot have methods"],
-        "correct": "b",
-        "explanation": "Struct members are public by default; class members are private."
-    },
-    {
-        "language": "C++",
-        "question": "What does `virtual` keyword do?",
-        "options": ["Enables polymorphism", "Makes a function faster", "Creates a virtual machine"],
-        "correct": "a"
-    },
-    {
-        "language": "C++",
-        "question": "How do you allocate memory dynamically?",
-        "options": ["malloc", "new", "Both"],
-        "correct": "c"
-    },
-    {
-        "language": "C++",
-        "question": "What is a reference?",
-        "options": ["A pointer", "An alias for an existing variable", "A copy of a variable"],
-        "correct": "b"
-    },
-    {
-        "language": "C++",
-        "question": "What is the STL?",
-        "options": ["Standard Template Library", "Standard Type List", "Simple Text Language"],
-        "correct": "a"
-    },
-    {
-        "language": "C++",
-        "question": "What is `std::vector`?",
-        "options": ["A static array", "A dynamic array", "A linked list"],
-        "correct": "b"
-    },
-    {
-        "language": "C++",
-        "question": "What is the size of an empty class?",
-        "options": ["0 bytes", "1 byte", "4 bytes"],
-        "correct": "b",
-        "explanation": "To ensure that two different objects have different addresses."
-    },
-    {
-        "language": "C#",
-        "question": "Which keyword is used for inheritance?",
-        "options": ["extends", ":", "implements"],
-        "correct": "b"
-    },
-    {
-        "language": "C#",
-        "question": "What is LINQ?",
-        "options": ["Language Integrated Query", "Linked Integer Queue", "List Index Query"],
-        "correct": "a"
-    },
-    {
-        "language": "C#",
-        "question": "What is the base class for all types in C#?",
-        "options": ["System.Object", "System.Base", "System.Root"],
-        "correct": "a"
-    },
-    {
-        "language": "C#",
-        "question": "Which keyword is used to define an asynchronous method?",
-        "options": ["await", "async", "thread"],
-        "correct": "b"
-    },
-    {
-        "language": "C#",
-        "question": "What is a nullable type?",
-        "options": ["int?", "int!", "null<int>"],
-        "correct": "a"
-    },
-    {
-        "language": "C#",
-        "question": "What is the difference between `ref` and `out`?",
-        "options": ["`out` requires initialization before passing", "`ref` requires initialization before passing", "No difference"],
-        "correct": "b"
-    },
-    {
-        "language": "C#",
-        "question": "What is a property?",
-        "options": ["A variable", "A member that provides a flexible mechanism to read, write, or compute the value of a private field", "A method"],
-        "correct": "b"
-    },
-    {
-        "language": "C#",
-        "question": "What does `using` statement do?",
-        "options": ["Imports a namespace", "Ensures IDisposable objects are disposed", "Both"],
-        "correct": "c"
-    },
-    {
-        "language": "Rust",
-        "question": "What is the ownership model?",
-        "options": ["A way to manage memory without a garbage collector", "A way to buy code", "A licensing model"],
-        "correct": "a"
-    },
-    {
-        "language": "Rust",
-        "question": "Which keyword defines a mutable variable?",
-        "options": ["var", "let mut", "mut"],
-        "correct": "b"
-    },
-    {
-        "language": "Rust",
-        "question": "What is `Option<T>`?",
-        "options": ["A type that represents an optional value (Some or None)", "A configuration option", "A compiler flag"],
-        "correct": "a"
-    },
-    {
-        "language": "Rust",
-        "question": "What is the output of `println!(\"{}\", 5)`?",
-        "options": ["5", "{5}", "Error"],
-        "correct": "a"
-    },
-    {
-        "language": "Rust",
-        "question": "What is a `Result` type used for?",
-        "options": ["Returning values", "Error handling", "Math calculations"],
-        "correct": "b"
-    },
-    {
-        "language": "Rust",
-        "question": "What does `unwrap()` do?",
-        "options": ["Extracts the value from Option/Result or panics", "Opens a file", "Decrypts data"],
-        "correct": "a"
-    },
-    {
-        "language": "Rust",
-        "question": "What is a trait?",
-        "options": ["A class", "A collection of methods that can be implemented by types", "A variable type"],
-        "correct": "b"
-    },
-    {
-        "language": "Rust",
-        "question": "How do you create a new vector?",
-        "options": ["Vector.new()", "vec![]", "list[]"],
-        "correct": "b"
-    },
-    {
-        "language": "Rust",
-        "question": "What is the borrow checker?",
-        "options": ["A library", "A compiler part that enforces ownership rules", "A linter"],
-        "correct": "b"
-    },
-    {
-        "language": "Rust",
-        "question": "What is `match`?",
-        "options": ["A regex tool", "A control flow operator for pattern matching", "A game"],
-        "correct": "b"
-    },
-    {
-        "language": "Web Dev",
-        "question": "What does HTML stand for?",
-        "options": ["Hyper Text Markup Language", "High Tech Modern Language", "Hyperlinks and Text Markup Language"],
-        "correct": "a"
-    },
-    {
-        "language": "Web Dev",
-        "question": "Which tag is used for the largest heading?",
-        "options": ["<head>", "<h6>", "<h1>"],
-        "correct": "c"
-    },
-    {
-        "language": "Web Dev",
-        "question": "What does CSS stand for?",
-        "options": ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style Sheets"],
-        "correct": "b"
-    },
-    {
-        "language": "Web Dev",
-        "question": "Which property changes text color?",
-        "options": ["text-color", "color", "font-color"],
-        "correct": "b"
-    },
-    {
-        "language": "Web Dev",
-        "question": "What is the Box Model?",
-        "options": ["A layout concept (Content, Padding, Border, Margin)", "A 3D model", "A flexbox container"],
-        "correct": "a"
-    },
-    {
-        "language": "Web Dev",
-        "question": "Which unit is relative to the font-size of the root element?",
-        "options": ["em", "rem", "px"],
-        "correct": "b"
-    },
-    {
-        "language": "Web Dev",
-        "question": "What is Flexbox?",
-        "options": ["A layout module for one-dimensional layouts", "A grid system", "A JavaScript library"],
-        "correct": "a"
-    },
-    {
-        "language": "Web Dev",
-        "question": "Which tag is used to link a JavaScript file?",
-        "options": ["<link>", "<script>", "<js>"],
-        "correct": "b"
-    },
-    {
-        "language": "Web Dev",
-        "question": "What does `z-index` control?",
-        "options": ["Zoom level", "Stack order of elements", "Opacity"],
-        "correct": "b"
-    },
-    {
-        "language": "Web Dev",
-        "question": "What is the difference between `id` and `class`?",
-        "options": ["`id` is unique, `class` can be reused", "`class` is unique", "No difference"],
-        "correct": "a"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is a Game Loop?",
-        "options": ["A loop that runs the game logic and rendering repeatedly", "A level that repeats", "A bug"],
-        "correct": "a"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is a Sprite?",
-        "options": ["A 3D model", "A 2D image or animation", "A sound effect"],
-        "correct": "b"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is a Collider?",
-        "options": ["A component that handles physics collisions", "A weapon", "A script"],
-        "correct": "a"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What engine uses C# as its primary scripting language?",
-        "options": ["Unreal Engine", "Unity", "Godot"],
-        "correct": "b"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is Raycasting?",
-        "options": ["Casting a spell", "Projecting a line to detect objects", "Rendering shadows"],
-        "correct": "b"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is FPS?",
-        "options": ["First Person Shooter / Frames Per Second", "Fast Player Speed", "Frames Per Screen"],
-        "correct": "a"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is a Mesh?",
-        "options": ["A collection of vertices, edges, and faces defining a 3D shape", "A texture", "A network"],
-        "correct": "a"
-    },
-    {
-        "language": "Game Dev",
-        "question": "What is Delta Time?",
-        "options": ["The time difference between the current and previous frame", "The total game time", "A loading screen"],
-        "correct": "a",
-        "explanation": "Used to make movement frame-rate independent."
-    },
-    {
-        "language": "PHP",
-        "question": "What does PHP stand for?",
-        "options": ["Personal Home Page", "PHP: Hypertext Preprocessor", "Private Hosting Platform"],
-        "correct": "b"
-    },
-    {
-        "language": "PHP",
-        "question": "How do you start a PHP block?",
-        "options": ["<php>", "<?php", "<script>"],
-        "correct": "b"
-    },
-    {
-        "language": "PHP",
-        "question": "Which symbol starts a variable in PHP?",
-        "options": ["@", "$", "%"],
-        "correct": "b"
-    },
-    {
-        "language": "PHP",
-        "question": "How do you print text in PHP?",
-        "options": ["echo", "print", "Both"],
-        "correct": "c"
-    },
-    {
-        "language": "PHP",
-        "question": "Which superglobal holds form data sent via POST?",
-        "options": ["$_GET", "$_POST", "$_REQUEST"],
-        "correct": "b"
-    },
-    {
-        "language": "PHP",
-        "question": "How do you connect to a MySQL database?",
-        "options": ["mysqli_connect()", "PDO", "Both"],
-        "correct": "c"
-    },
-    {
-        "language": "General",
-        "question": "What is Git?",
-        "options": ["A programming language", "A version control system", "A database"],
-        "correct": "b"
-    },
-    {
-        "language": "General",
-        "question": "What does SQL stand for?",
-        "options": ["Structured Query Language", "Simple Question Language", "System Query List"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is Docker?",
-        "options": ["A shipping company", "A platform for developing, shipping, and running applications in containers", "A code editor"],
-        "correct": "b"
-    },
-    {
-        "language": "General",
-        "question": "What is an API?",
-        "options": ["Application Programming Interface", "Apple Pie Ingredients", "Automated Program Instruction"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is Big O Notation?",
-        "options": ["A way to measure code complexity/performance", "A large letter O", "A sorting algorithm"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is HTTP?",
-        "options": ["HyperText Transfer Protocol", "High Tech Transfer Protocol", "HyperText Transmission Path"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is JSON?",
-        "options": ["JavaScript Object Notation", "Java Standard Object Name", "Just Some Object Notes"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is a Bug?",
-        "options": ["An insect", "An error or flaw in software", "A feature"],
-        "correct": "b"
-    },
-    {
-        "language": "General",
-        "question": "What does IDE stand for?",
-        "options": ["Integrated Development Environment", "Internal Data Engine", "Intelligent Design Editor"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is Agile?",
-        "options": ["A programming language", "A software development methodology", "A type of database"],
-        "correct": "b"
-    },
-    {
-        "language": "General",
-        "question": "What is recursion?",
-        "options": ["A function that calls itself", "A loop that never ends", "A type of variable"],
-        "correct": "a"
-    },
-    {
-        "language": "General",
-        "question": "What is a deadlock?",
-        "options": ["A security feature", "A situation where two or more processes are unable to proceed because each is waiting for the other to release a resource", "A type of loop"],
-        "correct": "b"
-    },
-    {
-        "language": "dotnet",
-        "question": "What is the .NET Framework?",
-        "options": ["A programming language", "A software framework developed by Microsoft", "A database system"],
-        "correct": "b"  
-    },
-    {
-        "language": "General",
-        "question": "What is a virtual machine?",
-        "options": ["A physical computer", "An emulation of a computer system", "A type of software bug"],
-        "correct": "b"
-    },
-    {
-        "language": "General",
-        "question": "What is multithreading?",
-        "options": ["Running multiple processes simultaneously", "A way to write code faster", "A type of database"],
-        "correct": "a"
-    },
-    {
+  {
+    "language": "Python",
+    "question": "What is the output of this code?\n```python\nprint(type(lambda: None))\n```",
+    "options": ["<class 'function'>", "<class 'lambda'>", "<class 'NoneType'>"],
+    "correct": "a",
+    "explanation": "Lambdas are functions in Python."
+  },
+  {
+    "language": "Python",
+    "question": "Which of these is NOT a valid way to create a set?",
+    "options": ["{1, 2}", "set([1, 2])", "{}"],
+    "correct": "c",
+    "explanation": "`{}` creates an empty dictionary, not a set. Use `set()` for an empty set."
+  },
+  {
+    "language": "Python",
+    "question": "What is the output?\n```python\na = [1, 2, 3]\nb = a\na += [4]\nprint(b)\n```",
+    "options": ["[1, 2, 3]", "[1, 2, 3, 4]", "Error"],
+    "correct": "b",
+    "explanation": "`+=` on lists modifies the list in-place, so `b` (which references the same object) sees the change."
+  },
+  {
+    "language": "Python",
+    "question": "What does the `__init__` method do?",
+    "options": [
+      "Initializes a class",
+      "Initializes an object (instance)",
+      "Creates a new module"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Python",
+    "question": "What is the result of `print(0.1 + 0.2 == 0.3)`?",
+    "options": ["True", "False", "Error"],
+    "correct": "b",
+    "explanation": "Floating point precision issues make 0.1 + 0.2 slightly larger than 0.3."
+  },
+  {
+    "language": "Python",
+    "question": "Which decorator is used to define a class method?",
+    "options": ["@static", "@classmethod", "@method"],
+    "correct": "b"
+  },
+  {
+    "language": "Python",
+    "question": "What is the output of `print('a' < 'b')`?",
+    "options": ["True", "False", "Error"],
+    "correct": "a",
+    "explanation": "Strings are compared lexicographically (ASCII value)."
+  },
+  {
+    "language": "Python",
+    "question": "What keyword is used to handle exceptions?",
+    "options": ["catch", "except", "handle"],
+    "correct": "b"
+  },
+  {
+    "language": "Python",
+    "question": "What is a generator in Python?",
+    "options": [
+      "A function that returns a list",
+      "A function that yields values one by one",
+      "A tool to generate code"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Python",
+    "question": "What is the output?\n```python\nx = (1)\nprint(type(x))\n```",
+    "options": ["<class 'tuple'>", "<class 'int'>", "<class 'list'>"],
+    "correct": "b",
+    "explanation": "A single element tuple requires a comma: `(1,)`."
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is the output of `console.log(typeof NaN)`?",
+    "options": ["'number'", "'NaN'", "'undefined'"],
+    "correct": "a",
+    "explanation": "NaN stands for Not-a-Number, but its type is technically 'number'."
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is the result of `[] + []`?",
+    "options": ["[]", "'' (Empty String)", "0"],
+    "correct": "b",
+    "explanation": "Arrays are converted to strings and concatenated."
+  },
+  {
+    "language": "JavaScript",
+    "question": "Which keyword declares a block-scoped variable?",
+    "options": ["var", "let", "def"],
+    "correct": "b"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is the output of `console.log(0.1 + 0.2 === 0.3)`?",
+    "options": ["true", "false", "undefined"],
+    "correct": "b",
+    "explanation": "Floating point arithmetic."
+  },
+  {
+    "language": "JavaScript",
+    "question": "How do you create a Promise?",
+    "options": [
+      "new Promise((resolve, reject) => ...)",
+      "Promise.create()",
+      "async function()"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What does `===` check?",
+    "options": ["Value only", "Value and Type", "Reference"],
+    "correct": "b"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is the output?\n```javascript\nconsole.log('5' - 3)\n```",
+    "options": ["2", "'53'", "NaN"],
+    "correct": "a",
+    "explanation": "The `-` operator converts the string to a number."
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is a closure?",
+    "options": [
+      "A function bundled with its lexical environment",
+      "The end of a function",
+      "A closed class"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "JavaScript",
+    "question": "Which method removes the last element from an array?",
+    "options": ["shift()", "pop()", "remove()"],
+    "correct": "b"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is the output?\n```javascript\nconsole.log(1 + '1')\n```",
+    "options": ["2", "'11'", "NaN"],
+    "correct": "b",
+    "explanation": "The `+` operator with a string performs concatenation."
+  },
+  {
+    "language": "Java",
+    "question": "What is the size of an `int` in Java?",
+    "options": ["16 bit", "32 bit", "64 bit"],
+    "correct": "b"
+  },
+  {
+    "language": "Java",
+    "question": "Which keyword is used to inherit a class?",
+    "options": ["implements", "extends", "inherits"],
+    "correct": "b"
+  },
+  {
+    "language": "Java",
+    "question": "What is the default value of a boolean variable?",
+    "options": ["true", "false", "null"],
+    "correct": "b"
+  },
+  {
+    "language": "Java",
+    "question": "Which collection allows duplicate elements?",
+    "options": ["Set", "List", "Map (Keys)"],
+    "correct": "b"
+  },
+  {
+    "language": "Java",
+    "question": "What is the entry point of a Java program?",
+    "options": [
+      "public static void main(String[] args)",
+      "void main()",
+      "public void start()"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Java",
+    "question": "Is Java pass-by-reference or pass-by-value?",
+    "options": ["Pass-by-reference", "Pass-by-value", "Both"],
+    "correct": "b",
+    "explanation": "Java is strictly pass-by-value. Object references are passed by value."
+  },
+  {
+    "language": "Java",
+    "question": "Which keyword makes a variable constant?",
+    "options": ["const", "final", "static"],
+    "correct": "b"
+  },
+  {
+    "language": "Java",
+    "question": "What is the parent class of all classes in Java?",
+    "options": ["Class", "Object", "Main"],
+    "correct": "b"
+  },
+  {
+    "language": "Java",
+    "question": "How do you compare two strings for equality?",
+    "options": ["==", ".equals()", ".compare()"],
+    "correct": "b",
+    "explanation": "`==` compares references, `.equals()` compares content."
+  },
+  {
+    "language": "Java",
+    "question": "What is an interface?",
+    "options": [
+      "A class with only abstract methods (mostly)",
+      "A concrete class",
+      "A variable type"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "What is the output?\n```cpp\nint x = 5;\ncout << x++ << ++x;\n```",
+    "options": ["57", "66", "Undefined Behavior"],
+    "correct": "c",
+    "explanation": "The order of evaluation of operands in `<<` is unspecified/undefined in older standards (before C++17)."
+  },
+  {
+    "language": "C++",
+    "question": "Which operator is used to access members of a pointer?",
+    "options": [".", "->", "::"],
+    "correct": "b"
+  },
+  {
+    "language": "C++",
+    "question": "What is a destructor?",
+    "options": [
+      "A method to delete a class",
+      "A method called when an object is destroyed",
+      "A method to free memory manually"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "C++",
+    "question": "What is the difference between `struct` and `class`?",
+    "options": [
+      "No difference",
+      "Default access specifier",
+      "Structs cannot have methods"
+    ],
+    "correct": "b",
+    "explanation": "Struct members are public by default; class members are private."
+  },
+  {
+    "language": "C++",
+    "question": "What does `virtual` keyword do?",
+    "options": [
+      "Enables polymorphism",
+      "Makes a function faster",
+      "Creates a virtual machine"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "How do you allocate memory dynamically?",
+    "options": ["malloc", "new", "Both"],
+    "correct": "c"
+  },
+  {
+    "language": "C++",
+    "question": "What is a reference?",
+    "options": [
+      "A pointer",
+      "An alias for an existing variable",
+      "A copy of a variable"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "C++",
+    "question": "What is the STL?",
+    "options": [
+      "Standard Template Library",
+      "Standard Type List",
+      "Simple Text Language"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "What is `std::vector`?",
+    "options": ["A static array", "A dynamic array", "A linked list"],
+    "correct": "b"
+  },
+  {
+    "language": "C++",
+    "question": "What is the size of an empty class?",
+    "options": ["0 bytes", "1 byte", "4 bytes"],
+    "correct": "b",
+    "explanation": "To ensure that two different objects have different addresses."
+  },
+  {
+    "language": "C#",
+    "question": "Which keyword is used for inheritance?",
+    "options": ["extends", ":", "implements"],
+    "correct": "b"
+  },
+  {
+    "language": "C#",
+    "question": "What is LINQ?",
+    "options": [
+      "Language Integrated Query",
+      "Linked Integer Queue",
+      "List Index Query"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C#",
+    "question": "What is the base class for all types in C#?",
+    "options": ["System.Object", "System.Base", "System.Root"],
+    "correct": "a"
+  },
+  {
+    "language": "C#",
+    "question": "Which keyword is used to define an asynchronous method?",
+    "options": ["await", "async", "thread"],
+    "correct": "b"
+  },
+  {
+    "language": "C#",
+    "question": "What is a nullable type?",
+    "options": ["int?", "int!", "null<int>"],
+    "correct": "a"
+  },
+  {
+    "language": "C#",
+    "question": "What is the difference between `ref` and `out`?",
+    "options": [
+      "`out` requires initialization before passing",
+      "`ref` requires initialization before passing",
+      "No difference"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "C#",
+    "question": "What is a property?",
+    "options": [
+      "A variable",
+      "A member that provides a flexible mechanism to read, write, or compute the value of a private field",
+      "A method"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "C#",
+    "question": "What does `using` statement do?",
+    "options": [
+      "Imports a namespace",
+      "Ensures IDisposable objects are disposed",
+      "Both"
+    ],
+    "correct": "c"
+  },
+  {
+    "language": "Rust",
+    "question": "What is the ownership model?",
+    "options": [
+      "A way to manage memory without a garbage collector",
+      "A way to buy code",
+      "A licensing model"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "Which keyword defines a mutable variable?",
+    "options": ["var", "let mut", "mut"],
+    "correct": "b"
+  },
+  {
+    "language": "Rust",
+    "question": "What is `Option<T>`?",
+    "options": [
+      "A type that represents an optional value (Some or None)",
+      "A configuration option",
+      "A compiler flag"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "What is the output of `println!(\"{}\", 5)`?",
+    "options": ["5", "{5}", "Error"],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "What is a `Result` type used for?",
+    "options": ["Returning values", "Error handling", "Math calculations"],
+    "correct": "b"
+  },
+  {
+    "language": "Rust",
+    "question": "What does `unwrap()` do?",
+    "options": [
+      "Extracts the value from Option/Result or panics",
+      "Opens a file",
+      "Decrypts data"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "What is a trait?",
+    "options": [
+      "A class",
+      "A collection of methods that can be implemented by types",
+      "A variable type"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Rust",
+    "question": "How do you create a new vector?",
+    "options": ["Vector.new()", "vec![]", "list[]"],
+    "correct": "b"
+  },
+  {
+    "language": "Rust",
+    "question": "What is the borrow checker?",
+    "options": [
+      "A library",
+      "A compiler part that enforces ownership rules",
+      "A linter"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Rust",
+    "question": "What is `match`?",
+    "options": [
+      "A regex tool",
+      "A control flow operator for pattern matching",
+      "A game"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What does HTML stand for?",
+    "options": [
+      "Hyper Text Markup Language",
+      "High Tech Modern Language",
+      "Hyperlinks and Text Markup Language"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Web Dev",
+    "question": "Which tag is used for the largest heading?",
+    "options": ["<head>", "<h6>", "<h1>"],
+    "correct": "c"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What does CSS stand for?",
+    "options": [
+      "Computer Style Sheets",
+      "Cascading Style Sheets",
+      "Creative Style Sheets"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Web Dev",
+    "question": "Which property changes text color?",
+    "options": ["text-color", "color", "font-color"],
+    "correct": "b"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What is the Box Model?",
+    "options": [
+      "A layout concept (Content, Padding, Border, Margin)",
+      "A 3D model",
+      "A flexbox container"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Web Dev",
+    "question": "Which unit is relative to the font-size of the root element?",
+    "options": ["em", "rem", "px"],
+    "correct": "b"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What is Flexbox?",
+    "options": [
+      "A layout module for one-dimensional layouts",
+      "A grid system",
+      "A JavaScript library"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Web Dev",
+    "question": "Which tag is used to link a JavaScript file?",
+    "options": ["<link>", "<script>", "<js>"],
+    "correct": "b"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What does `z-index` control?",
+    "options": ["Zoom level", "Stack order of elements", "Opacity"],
+    "correct": "b"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What is the difference between `id` and `class`?",
+    "options": [
+      "`id` is unique, `class` can be reused",
+      "`class` is unique",
+      "No difference"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is a Game Loop?",
+    "options": [
+      "A loop that runs the game logic and rendering repeatedly",
+      "A level that repeats",
+      "A bug"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is a Sprite?",
+    "options": ["A 3D model", "A 2D image or animation", "A sound effect"],
+    "correct": "b"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is a Collider?",
+    "options": [
+      "A component that handles physics collisions",
+      "A weapon",
+      "A script"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What engine uses C# as its primary scripting language?",
+    "options": ["Unreal Engine", "Unity", "Godot"],
+    "correct": "b"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is Raycasting?",
+    "options": [
+      "Casting a spell",
+      "Projecting a line to detect objects",
+      "Rendering shadows"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is FPS?",
+    "options": [
+      "First Person Shooter / Frames Per Second",
+      "Fast Player Speed",
+      "Frames Per Screen"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is a Mesh?",
+    "options": [
+      "A collection of vertices, edges, and faces defining a 3D shape",
+      "A texture",
+      "A network"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Game Dev",
+    "question": "What is Delta Time?",
+    "options": [
+      "The time difference between the current and previous frame",
+      "The total game time",
+      "A loading screen"
+    ],
+    "correct": "a",
+    "explanation": "Used to make movement frame-rate independent."
+  },
+  {
+    "language": "PHP",
+    "question": "What does PHP stand for?",
+    "options": [
+      "Personal Home Page",
+      "PHP: Hypertext Preprocessor",
+      "Private Hosting Platform"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "PHP",
+    "question": "How do you start a PHP block?",
+    "options": ["<php>", "<?php", "<script>"],
+    "correct": "b"
+  },
+  {
+    "language": "PHP",
+    "question": "Which symbol starts a variable in PHP?",
+    "options": ["@", "$", "%"],
+    "correct": "b"
+  },
+  {
+    "language": "PHP",
+    "question": "How do you print text in PHP?",
+    "options": ["echo", "print", "Both"],
+    "correct": "c"
+  },
+  {
+    "language": "PHP",
+    "question": "Which superglobal holds form data sent via POST?",
+    "options": ["$_GET", "$_POST", "$_REQUEST"],
+    "correct": "b"
+  },
+  {
+    "language": "PHP",
+    "question": "How do you connect to a MySQL database?",
+    "options": ["mysqli_connect()", "PDO", "Both"],
+    "correct": "c"
+  },
+  {
+    "language": "General",
+    "question": "What is Git?",
+    "options": [
+      "A programming language",
+      "A version control system",
+      "A database"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "General",
+    "question": "What does SQL stand for?",
+    "options": [
+      "Structured Query Language",
+      "Simple Question Language",
+      "System Query List"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is Docker?",
+    "options": [
+      "A shipping company",
+      "A platform for developing, shipping, and running applications in containers",
+      "A code editor"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "General",
+    "question": "What is an API?",
+    "options": [
+      "Application Programming Interface",
+      "Apple Pie Ingredients",
+      "Automated Program Instruction"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is Big O Notation?",
+    "options": [
+      "A way to measure code complexity/performance",
+      "A large letter O",
+      "A sorting algorithm"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is HTTP?",
+    "options": [
+      "HyperText Transfer Protocol",
+      "High Tech Transfer Protocol",
+      "HyperText Transmission Path"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is JSON?",
+    "options": [
+      "JavaScript Object Notation",
+      "Java Standard Object Name",
+      "Just Some Object Notes"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is a Bug?",
+    "options": ["An insect", "An error or flaw in software", "A feature"],
+    "correct": "b"
+  },
+  {
+    "language": "General",
+    "question": "What does IDE stand for?",
+    "options": [
+      "Integrated Development Environment",
+      "Internal Data Engine",
+      "Intelligent Design Editor"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is Agile?",
+    "options": [
+      "A programming language",
+      "A software development methodology",
+      "A type of database"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "General",
+    "question": "What is recursion?",
+    "options": [
+      "A function that calls itself",
+      "A loop that never ends",
+      "A type of variable"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "General",
+    "question": "What is a deadlock?",
+    "options": [
+      "A security feature",
+      "A situation where two or more processes are unable to proceed because each is waiting for the other to release a resource",
+      "A type of loop"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "dotnet",
+    "question": "What is the .NET Framework?",
+    "options": [
+      "A programming language",
+      "A software framework developed by Microsoft",
+      "A database system"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "General",
+    "question": "What is a virtual machine?",
+    "options": [
+      "A physical computer",
+      "An emulation of a computer system",
+      "A type of software bug"
+    ],
+    "correct": "b"
+  },
+  {
+    "language": "General",
+    "question": "What is multithreading?",
+    "options": [
+      "Running multiple processes simultaneously",
+      "A way to write code faster",
+      "A type of database"
+    ],
+    "correct": "a"
+  },
+  {
     "language": "Python",
     "question": "In Python, what does the `@functools.lru_cache` decorator do?",
     "options": [
@@ -771,11 +959,7 @@
   {
     "language": "Algorithms",
     "question": "Which data structure supports O(1) average time for insert/lookup?",
-    "options": [
-      "Hash table",
-      "Array",
-      "Binary heap"
-    ],
+    "options": ["Hash table", "Array", "Binary heap"],
     "correct": "a"
   },
   {
@@ -801,21 +985,13 @@
   {
     "language": "SQL",
     "question": "What is the purpose of an *index*?",
-    "options": [
-      "Speed up lookups",
-      "Compress data",
-      "Enforce constraints"
-    ],
+    "options": ["Speed up lookups", "Compress data", "Enforce constraints"],
     "correct": "a"
   },
   {
     "language": "SQL",
     "question": "Which SQL command removes rows but keeps structure?",
-    "options": [
-      "DELETE",
-      "DROP",
-      "TRUNCATE"
-    ],
+    "options": ["DELETE", "DROP", "TRUNCATE"],
     "correct": "a"
   },
   {
@@ -897,5 +1073,237 @@
       "Favor CSS over HTML"
     ],
     "correct": "a"
-  }
+  },
+  [
+    {
+      "language": "Python",
+      "question": "What is the difference between `deepcopy` and `copy` in Python?",
+      "options": [
+        "Deepcopy duplicates all nested objects; copy only duplicates the top-level object",
+        "Copy duplicates nested objects; deepcopy only top-level object",
+        "They are identical"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Python",
+      "question": "Which of the following statements about Python descriptors is true?",
+      "options": [
+        "They allow customization of attribute access (`__get__`, `__set__`, `__delete__`)",
+        "They are only used for class inheritance",
+        "They automatically serialize objects"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Python",
+      "question": "What is the purpose of the `__slots__` attribute?",
+      "options": [
+        "Reduce memory usage by preventing dynamic creation of attributes",
+        "Automatically define class methods",
+        "Enable multiple inheritance"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "JavaScript",
+      "question": "What does `async`/`await` do internally?",
+      "options": [
+        "Transforms asynchronous code into Promises and pauses execution until resolved",
+        "Converts synchronous functions into asynchronous ones",
+        "Runs code in a separate thread"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "JavaScript",
+      "question": "What is the purpose of `WeakMap`?",
+      "options": [
+        "Store key-value pairs with keys that are weakly referenced to allow garbage collection",
+        "Store large arrays efficiently",
+        "Replace Map in all use cases"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Java",
+      "question": "What does the `synchronized` keyword ensure?",
+      "options": [
+        "Only one thread executes the synchronized block/method at a time",
+        "Prevents memory leaks",
+        "Optimizes CPU usage"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Java",
+      "question": "What is the difference between `HashMap` and `ConcurrentHashMap`?",
+      "options": [
+        "ConcurrentHashMap is thread-safe, HashMap is not",
+        "HashMap is faster and thread-safe",
+        "They are identical"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "C++",
+      "question": "Which of the following describes *move semantics*?",
+      "options": [
+        "Transfers ownership of resources instead of copying",
+        "Creates multiple references to the same object",
+        "Optimizes memory allocation for small objects"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "C++",
+      "question": "What does the `mutable` keyword allow?",
+      "options": [
+        "Modification of class member in const context",
+        "Prevent object from being copied",
+        "Enforce thread-safety"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "C++",
+      "question": "What is a *pure virtual function*?",
+      "options": [
+        "A function with no implementation in the base class, must be overridden",
+        "A function that can only be called once",
+        "A function that cannot be inherited"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "C#",
+      "question": "Which statement about `async void` is true?",
+      "options": [
+        "Only suitable for event handlers, cannot be awaited",
+        "Runs synchronously",
+        "Throws compile-time error"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "C#",
+      "question": "What is *boxing* in C#?",
+      "options": [
+        "Wrapping a value type in an object",
+        "Storing a class inside another class",
+        "Encrypting data in memory"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Rust",
+      "question": "What is the purpose of lifetimes in Rust?",
+      "options": [
+        "Ensure references are valid and prevent dangling pointers",
+        "Optimize thread performance",
+        "Allow dynamic typing"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Rust",
+      "question": "Which of the following is true about `Arc<T>`?",
+      "options": [
+        "Provides thread-safe reference counting for shared ownership",
+        "Is mutable by default",
+        "Requires unsafe code to use"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "System Design",
+      "question": "What is *sharding* in databases?",
+      "options": [
+        "Splitting a database into smaller horizontal partitions",
+        "Indexing columns for faster queries",
+        "Compressing tables"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "System Design",
+      "question": "What is the main trade-off of caching in distributed systems?",
+      "options": [
+        "Stale data vs improved latency",
+        "Higher CPU vs lower memory",
+        "Increased network bandwidth"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Algorithms",
+      "question": "Which scenario requires a *topological sort*?",
+      "options": [
+        "Scheduling tasks with dependencies",
+        "Sorting numbers",
+        "Balancing a binary tree"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Algorithms",
+      "question": "What is a *trie* data structure used for?",
+      "options": [
+        "Efficient retrieval of strings with common prefixes",
+        "Sorting integers",
+        "Graph traversal"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Web Dev",
+      "question": "What is *service worker* used for?",
+      "options": [
+        "Intercept network requests to enable offline capability and caching",
+        "Run server-side code",
+        "Render CSS faster"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Web Dev",
+      "question": "What does *event loop* do in browsers?",
+      "options": [
+        "Handles async callbacks by queuing and executing them",
+        "Parallelizes JavaScript across threads",
+        "Compiles JS to machine code"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Web Dev",
+      "question": "Which is true about HTTP/2?",
+      "options": [
+        "Supports multiplexing multiple requests over a single TCP connection",
+        "Always encrypts traffic",
+        "Requires REST API"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "Python",
+      "question": "What does `asyncio.run()` do?",
+      "options": [
+        "Runs the main async coroutine and manages the event loop",
+        "Blocks all threads until completion",
+        "Executes synchronous code asynchronously"
+      ],
+      "correct": "a"
+    },
+    {
+      "language": "JavaScript",
+      "question": "What does `Object.freeze()` do?",
+      "options": [
+        "Prevents adding or modifying properties of an object",
+        "Deletes an object from memory",
+        "Makes object properties private"
+      ],
+      "correct": "a"
+    }
+  ]
 ]

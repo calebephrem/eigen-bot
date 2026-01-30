@@ -43,5 +43,3 @@ def fix_question(question):
     )
 
     return question
-
-print(fix_question(get_random_question()))  # For quick testing
