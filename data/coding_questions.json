@@ -597,5 +597,305 @@
         "question": "What is multithreading?",
         "options": ["Running multiple processes simultaneously", "A way to write code faster", "A type of database"],
         "correct": "a"
-    }
+    },
+    {
+    "language": "Python",
+    "question": "In Python, what does the `@functools.lru_cache` decorator do?",
+    "options": [
+      "Enables automatic memoization of function results",
+      "Locks function to a single thread",
+      "Converts function to async"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Python",
+    "question": "Which of the following is true about Python’s garbage collector?",
+    "options": [
+      "It uses reference counting and generational collection",
+      "It only uses mark‑and‑sweep",
+      "It requires manual invocation"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Python",
+    "question": "What does the `nonlocal` keyword do?",
+    "options": [
+      "Allows assignment to a variable in the nearest enclosing scope",
+      "Declares a global variable",
+      "Prevents variable shadowing"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is *event delegation* in JavaScript?",
+    "options": [
+      "Handling events at a parent element instead of individual children",
+      "Delegating event handling to a web worker",
+      "Passing events between frames"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "JavaScript",
+    "question": "Which is true about `Symbol` in JavaScript?",
+    "options": [
+      "Symbols are unique and can be used as object keys",
+      "Symbols are the same if they have the same description",
+      "Symbols convert to strings implicitly"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is *tail call optimization*?",
+    "options": [
+      "Reusing stack frames for tail calls",
+      "Inlining functions at compile time",
+      "Garbage collecting unused closures"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Java",
+    "question": "What is *type erasure* in Java Generics?",
+    "options": [
+      "Generic type information is removed at runtime",
+      "Generics are compiled to raw types only in debug mode",
+      "Generics use reflection internally"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Java",
+    "question": "What does the `volatile` keyword guarantee?",
+    "options": [
+      "Visibility of updates to variables across threads",
+      "Atomicity of operations",
+      "Ordered execution of code"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Java",
+    "question": "What is the purpose of the `transient` keyword?",
+    "options": [
+      "It prevents serialization of the field",
+      "It prevents method overriding",
+      "It makes field lazy"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "What is *RAII* used for in C++?",
+    "options": [
+      "Automatic resource management via object lifetime",
+      "Run‑ahead instruction optimization",
+      "Reference allocation isolation"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "Which of the following is true about `std::unique_ptr`?",
+    "options": [
+      "It cannot be copied but can be moved",
+      "It uses reference counting",
+      "It is thread‑safe by default"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "What does `constexpr` indicate?",
+    "options": [
+      "Expression can be evaluated at compile time",
+      "It’s a constant pointer",
+      "It disables optimization"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C#",
+    "question": "What is the *difference* between `Task` and `Thread`?",
+    "options": [
+      "Task represents an asynchronous operation while Thread is a low‑level OS thread",
+      "Task is slower than Thread",
+      "Thread can’t run async methods"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C#",
+    "question": "What does `yield` do in an iterator?",
+    "options": [
+      "Returns the next value while preserving state",
+      "Stops the program",
+      "Creates a new thread"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "What does `unsafe` mean in Rust?",
+    "options": [
+      "Allows operations that bypass Rust’s safety guarantees",
+      "Compiles code slower",
+      "Marks legacy code"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "What’s the purpose of `Drop` trait?",
+    "options": [
+      "Run code when value goes out of scope",
+      "Prevent copying",
+      "Auto snapshot state"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Algorithms",
+    "question": "What is *amortized analysis* used for?",
+    "options": [
+      "Average performance of operations over a sequence",
+      "Worst‑case only",
+      "Best‑case only"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Algorithms",
+    "question": "Which data structure supports O(1) average time for insert/lookup?",
+    "options": [
+      "Hash table",
+      "Array",
+      "Binary heap"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "System Design",
+    "question": "What is *horizontal scaling*?",
+    "options": [
+      "Adding more machines",
+      "Adding more CPU cores",
+      "Increasing RAM"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "System Design",
+    "question": "What is *load balancing*?",
+    "options": [
+      "Distributing traffic across multiple servers",
+      "Encrypting network traffic",
+      "Caching database results"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "SQL",
+    "question": "What is the purpose of an *index*?",
+    "options": [
+      "Speed up lookups",
+      "Compress data",
+      "Enforce constraints"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "SQL",
+    "question": "Which SQL command removes rows but keeps structure?",
+    "options": [
+      "DELETE",
+      "DROP",
+      "TRUNCATE"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Python",
+    "question": "What does *duck typing* mean?",
+    "options": [
+      "Type determined by behavior, not explicit type",
+      "Types are mutable by default",
+      "Static type checking"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "JavaScript",
+    "question": "What is *hoisting* in JavaScript?",
+    "options": [
+      "Moving declarations to top of scope",
+      "Enabling garbage collection",
+      "Lazy loading modules"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Java",
+    "question": "What is the *diamond problem* and how does Java resolve it?",
+    "options": [
+      "Multiple inheritance ambiguity resolved using interfaces",
+      "Runtime type ambiguity",
+      "Conflicting constructors"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C++",
+    "question": "What is *SFINAE* used for?",
+    "options": [
+      "Substitution Failure Is Not An Error (template overload resolution)",
+      "Strong function inlining",
+      "Shared file include avoidance"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "C#",
+    "question": "What does *LINQ* enable?",
+    "options": [
+      "Query expressions against data collections",
+      "Low-level I/O",
+      "Thread scheduling"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Rust",
+    "question": "What does ownership allow Rust to guarantee?",
+    "options": [
+      "Memory safety without garbage collection",
+      "Higher performance than C",
+      "Automatic parallelism"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What is *CORS* used for?",
+    "options": [
+      "Control cross‑origin requests in browsers",
+      "Compress images",
+      "Cache HTML files"
+    ],
+    "correct": "a"
+  },
+  {
+    "language": "Web Dev",
+    "question": "What does *progressive enhancement* mean?",
+    "options": [
+      "Build basic experience first, then add advanced features",
+      "Always load full JavaScript",
+      "Favor CSS over HTML"
+    ],
+    "correct": "a"
+  }
 ]
