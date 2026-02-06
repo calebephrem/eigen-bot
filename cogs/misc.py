@@ -639,6 +639,18 @@ class Misc(commands.Cog):
             ephemeral=True
         )
 
+    @commands.command(name='dm', description='Explains why you should not DM members for help')
+    async def dm_command(self, ctx: commands.Context):
+        """Explains why questions should be asked in the server instead of DMs."""
+        message = (
+            "Please keep questions and answers within CVH. Do not DM them to other members. "
+            "By sending your questions in the server, you maximize the number of people that see it, "
+            "which can give you a higher quality response faster than if you were to DM an individual person. "
+            "By DM-ing someone, you're also putting unfair pressure on that person to answer you, "
+            "when they may not be in a position to do so at the moment."
+        )
+        await ctx.send(message)
+
 
 async def setup(bot):
     """Setup the misc cog."""
