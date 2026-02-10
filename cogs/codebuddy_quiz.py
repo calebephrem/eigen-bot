@@ -65,8 +65,8 @@ class CodeBuddyQuizCog(commands.Cog):
                 return
 
             options_letters = ["a", "b", "c"]
-            options_text = [f"{options_letters[idx]}) {q['options'][idx]}" for idx in range(len(options_letters))]
-            options_text = "\n".join(options_text)
+            options_text = "\n".join(f"**{letter})** {option}" for letter, option in zip(options_letters, q["options"]))
+            
             embed = discord.Embed(
                 title="❓ Coding Quiz",
                 description=f"**{self.current_question}**\n\n{options_text}",
